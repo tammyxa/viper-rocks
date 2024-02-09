@@ -2,7 +2,7 @@
 // https://next-auth.js.org/providers/credentials
 // https://next-auth.js.org/providers/github
 // Configures different authentication providers
-// Currently, we have GitHub, Google, and Credentials
+// Currently, we have GitHub, Google, and (working on) Credentials
 
 
 import GitHubProvider from "next-auth/providers/github";
@@ -76,7 +76,7 @@ export const options = {
           return newUser;
         }
         // Fetch user record from the database based on the email
-        const user = await prisma.users.findOne({ email });
+        const user = await prisma.user.findOne({ email });
 
         if (user) {
           // Compare the provided password with the stored password hash

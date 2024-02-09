@@ -34,7 +34,7 @@ const UserForm = () => {
 
     if (!res.ok) {
       const response = await res.json();
-      setErrorMessage("fjsdkl");
+      setErrorMessage(response);
     } else {
       router.refresh();
       router.push("/");

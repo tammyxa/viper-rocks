@@ -17,10 +17,10 @@ export async function POST(req) {
     }
  
     // Check for duplicate emails case-insensitively using Prisma
-    const duplicateUser = await prisma.users.findFirst({
+    const duplicateUser = await prisma.user.findFirst({
       where: {
         email: {
-          equals: userData.email.toLowerCase(),
+          equals: userData.email,
           mode: "insensitive",
         },
       },
@@ -34,7 +34,7 @@ export async function POST(req) {
     const hashedPassword = await bcrypt.hash(userData.password_hash, 10);
     userData.password_hash = hashedPassword;
 
-    const newUser = await prisma.users.create({
+    const newUser = await prisma.user.create({
       data: userData,
     });
 

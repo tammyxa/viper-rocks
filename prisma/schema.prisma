@@ -9,16 +9,15 @@ datasource db {
 
 model User {
   id            Int         @id @default(autoincrement())
-  user_id       String      @unique
   username      String      @unique
   password_hash String
   email         String      @unique
-  first_name    String
-  last_name     String
-  age_above_13  Boolean
+  first_name    String?
+  last_name     String?
+  age_above_13  Boolean?
   parent_email  String?
-  pfirst_name   String
-  plast_name    String
+  pfirst_name   String?
+  plast_name    String?
   created_at    DateTime    @default(now())
   sessions      Session[]
   accounts      Account[]
@@ -27,17 +26,17 @@ model User {
 model Session {
   id           Int      @id @default(autoincrement())
   sessionToken String   @unique
-  user_id      String
+  user_id      Int
   expires      DateTime
-  user         User     @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  user         User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model Account {
   id               Int     @id @default(autoincrement())
   userId           Int
-  type             String
-  provider         String
-  providerAccountId String
+  type             String?
+  provider         String?
+  providerAccountId String?
   refresh_token    String?
   access_token     String?
   expires_at       Int?
