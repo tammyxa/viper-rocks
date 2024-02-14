@@ -4,13 +4,13 @@
 // Configures different authentication providers
 // Currently, we have GitHub, Google, and (working on) Credentials
 
-
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaClient } from "@prisma/client";
+import prisma from "../../../lib/prisma";
+import bcrypt from "bcrypt";
 
-const prisma = new PrismaClient();
+
 
 export const options = {
   providers: [
@@ -20,6 +20,7 @@ export const options = {
 
         let userRole = "Github User";
         if (profile?.email == "mgibson9@calstatela.edu") {
+          // change this to your email to test role functionality
           userRole = "Admin";
         }
 
@@ -47,52 +48,43 @@ export const options = {
       clientSecret: process.env.GOOGLE_SECRET,
     }),
     CredentialsProvider({
-      name: "credentials",
+      name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email", placeholder: "email" },
+        email: { label: "Email", type: "email", placeholder: "enter email" },
         password: {
           label: "Password",
           type: "password",
-          placeholder: "password",
+          placeholder: "enter password",
         },
       },
-      async authorize(credentials) {
-        const { email, password } = credentials;
-
-        // Check if the "Create Account" button was clicked
-        if (req.method === "POST" && req.body.action === "create-account") {
-          // Perform logic for creating a new account in the database
-          const hashedPassword = await bcrypt.hash(password, 10);
-
-          const newUser = await prisma.users.create({
-            data: {
-              email,
-              password_hash: hashedPassword,
-              // Other user properties...
-            },
+      authorize: async (credentials) => {
+        try {
+          const foundUser = await prisma.user.findUnique({
+            where: { email: credentials.email }
           });
 
-          // Return the newly created user object
-          return newUser;
-        }
-        // Fetch user record from the database based on the email
-        const user = await prisma.user.findOne({ email });
+          if (foundUser) {
+            console.log("user exists");
+            const match = await bcrypt.compare(credentials.password, foundUser.password);
+            
+              if (match) {
+                console.log("password match");
+                delete foundUser.password;
 
-        if (user) {
-          // Compare the provided password with the stored password hash
-          const passwordMatch = await bcrypt.compare(password, user.password);
-
-          if (passwordMatch) {
-            // Return the user object if the password matches
-            return user;
+                foundUser["role"] = "Unverified Email";
+                return foundUser;
+              }
+            
           }
+        } catch (error) {
+          console.error("Credentials Error: ", error);
+          return null;
         }
-
-        // Return null if the email or password is incorrect
-        return null;
       },
     }),
   ],
+
+  // ensures that the token.role property is synchronized with the user.role property and vice versa, allowing for consistent role-based access control throughout the application.
   callbacks: {
     async jwt({ token, user }) {
       if (user) token.role = user.role;
@@ -108,5 +100,5 @@ export const options = {
     strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
-  debug: process.env.NODE_ENV === "development",
+  debug: process.env.NODE_ENV === "development" ? true : false,
 };

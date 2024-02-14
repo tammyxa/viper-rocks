@@ -9,7 +9,7 @@ const UserForm = () => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
-    password_hash: "",
+    passwordHash: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -25,21 +25,35 @@ const UserForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage("damn");
-    const res = await fetch("/api/users", {
-      method: "POST",
-      body: JSON.stringify(formData),
-      "content-type": "application/json",
-    });
+
+    try { 
+      const res = await fetch("/api/users/Create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: formData.username,
+          email: formData.email,
+          passwordHash: formData.passwordHash,
+        }),
+      });
+      
 
     if (!res.ok) {
-      const response = await res.json();
-      setErrorMessage(response);
-    } else {
-      router.refresh();
-      router.push("/");
+      const errorResponse = await res.json();
+      throw new Error(`Error: ${errorResponse.message} - ${errorResponse.error}`);
     }
+
+    router.refresh();
+    router.push("/Public");
+    
+  } catch (error) {
+    setErrorMessage(error.message);
+  }
   };
+
+
   return (
     <>
       <form
@@ -70,12 +84,12 @@ const UserForm = () => {
         />
         <label>Password</label>
         <input
-          id="password_hash"
-          name="password_hash"
+          id="passwordHash"
+          name="passwordHash"
           type="password"
           onChange={handleChange}
           required={true}
-          value={formData.password_hash}
+          value={formData.passwordHash}
           className="m-2 bg-slate-400 rounded"
         />
         <input
