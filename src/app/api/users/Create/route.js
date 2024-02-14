@@ -1,11 +1,8 @@
-import { NextResponse } from "next/server";
-import { hash } from "bcrypt";
-//import { PrismaClient } from "@prisma/client";
-import prisma from "../../../lib/prisma";
+import { NextResponse } from "next/server"; // NextResponse for sending responses as json objects
+import { hash } from "bcrypt";              //bcrypt for hashing and salting passwords 
+import prisma from "../../../lib/prisma";   //prisma configuration file
 
-//const { PrismaClient } = require('@prisma/client');
 
-//const prisma = new PrismaClient();
 
 // Should be a POST request, GET not allowed
 export async function GET(req) {
@@ -17,6 +14,7 @@ export async function GET(req) {
   );
 }
 
+
 // Create a new user
 export async function POST(req) {
 
@@ -26,7 +24,7 @@ export async function POST(req) {
     const { username, email, passwordHash } = body;
 
 
-    // Confirm data exists
+    // Confirm email and password data exists
     if (!email || !passwordHash) {
       return NextResponse.json(
         {
@@ -39,14 +37,11 @@ export async function POST(req) {
       );
     };
     
-    /*
+    
     // Check for duplicate emails case-insensitively using Prisma
     const duplicateUser = await prisma.user.findUnique({
       where: {
-        email: {
-          equals: email,
-          mode: "insensitive",
-        },
+        email: email.toLowerCase(),
       },
     });
 
@@ -58,7 +53,7 @@ export async function POST(req) {
         { status: 409 }
       );
     }
-    */
+    
 
    
 
@@ -67,11 +62,8 @@ export async function POST(req) {
 
    
 
-   
- 
-    
 
-    // Create the user
+    // Create the user with the email, username, and hashed password
     const newUser = await prisma.user.create({
       data: {
         email: email,
@@ -86,9 +78,13 @@ export async function POST(req) {
       { status: 201 }
     );
   } catch (error) {
-    return NextResponse.json({ message: "Fuck Error", error }, { status: 500 });
+    // If there is an error, return the error. This could be a Prisma error or a server error. In my experience, Prisma errors are more common.
+    return NextResponse.json({ message: "Error", error }, { status: 500 });
   } finally {
+    // Disconnect from the Prisma client
     await prisma.$disconnect();
   }
 
 }
+
+// if error returned is "prisma validation error, there is an issue with one of the queries and\or its parameters"
