@@ -28,7 +28,7 @@ export async function POST(req) {
     if (!email || !passwordHash) {
       return NextResponse.json(
         {
-          message: "Email and Password are required foo",
+          message: "Email and Password are required",
           email,
           passwordHash,
           username,

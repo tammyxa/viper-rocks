@@ -13,6 +13,7 @@ const ClientMember = async () => {
             <h1>member client session</h1>
             <p>{session?.user?.email}</p>
             <p>{session?.user?.role}</p>
+            <image>{session?.user?.image}</image>
         </div>
     );
 }

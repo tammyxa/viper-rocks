@@ -7,10 +7,38 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+
+
+
 model User {
-  id        Int      @id @default(autoincrement())
-  username  String
-  email     String   @unique
-  password  String
+  id            Int      @id @default(autoincrement())
+  username      String      
+  password      String
+  email         String      @unique
+  role          String?      
+  emailVerified DateTime?
+  profilePicture         String?
+  firstName    String?
+  lastName     String?
+  over13  Boolean?
+  parentEmail  String?
+  pFirstName   String?
+  pLastName    String?
+  createdAt    DateTime    @default(now())
+  updatedAt     DateTime?    @updatedAt
+  accounts      Account[]
 }
 
+model Account {
+  id        String      @id @default(uuid())
+  userId    Int
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  provider  String
+  access_token String? @db.Text
+  scope String? @db.Text
+  token_type String?
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
