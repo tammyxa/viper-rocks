@@ -11,14 +11,23 @@ const Nav = async () => {
                     <div>Viper Rocks!</div>
                     <div className="flex gap-10">
                         <Link href="/">Home</Link>
-                        <Link href="/CreateUser">CreateUser</Link>
+                        <Link href="/Forbidden">Forbidden</Link>
                         <Link href="/Member">Member</Link>
                         <Link href="/Public">Public</Link>
                         {session ? (
                             <Link href="/api/auth/signout?callbackUrl=/">Logout</Link>
                          ) : (
+                            <div className="flex gap-10">
                             <Link href="/api/auth/signin">Login</Link> 
+                            <Link href="/CreateUser">Signup</Link>
+                            </div>
+                            
                         )}
+
+                         
+                            
+
+                        
                     </div>
                 </nav>
             </header>
