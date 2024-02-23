@@ -11,6 +11,8 @@ const Nav = async () => {
                     <div>Viper Rocks!</div>
                     <div className="flex gap-10">
                         <Link href="/">Home</Link>
+                        <Link href="/Contact">Contact Us</Link>
+                        <Link href="/About">About</Link>
                         <Link href="/Forbidden">Forbidden</Link>
                         <Link href="/Member">Member</Link>
                         <Link href="/Public">Public</Link>
