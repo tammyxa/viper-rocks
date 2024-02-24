@@ -18,11 +18,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head></head>
       <body>
         <Nav />
         {children}
         <Footer />
-        <script src="./dist/js/explorer-1.min.css"></script>
+        {/* <!-- JavaScript -->
+        <script src="explorer-1.min.js" async></script> */}
       </body>
     </html>
   );
