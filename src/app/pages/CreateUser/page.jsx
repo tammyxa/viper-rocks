@@ -1,4 +1,5 @@
-import UserForm from '../(components)/UserForm';
+// Create User Page
+import UserForm from '../../(components)/UserForm';
 const CreateUser = () => {
     return (
         <div>

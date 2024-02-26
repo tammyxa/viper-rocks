@@ -18,7 +18,7 @@ export const handleOAuthLogin = async (profile, account) => {
         data: {
           email: userData.email,
           password: "OAuth",
-          username: profile.username,
+          username: userData.username === undefined ? profile.name: userData.username,
           //role: account.provider,
         },
       });
@@ -67,6 +67,7 @@ const extractUserDataFromProfile = (profile) => {
     email: profile.email,
     id: profile.id,
     sub: profile.sub,
+    username: profile.username,
   };
 };
 
