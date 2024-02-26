@@ -23,11 +23,6 @@ const Nav = async () => {
                             </div>
                             
                         )}
-
-                         
-                            
-
-                        
                     </div>
                 </nav>
             </header>
