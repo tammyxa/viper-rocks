@@ -27,6 +27,7 @@ export const handleOAuthLogin = async (profile, account) => {
     // Log the user and account data for debugging
     console.log("********User:", userData);
     console.log("*******Account:", accountData);
+   //  console.log("*********User:", user);
 
 
     // Create or update the account associated with the user
