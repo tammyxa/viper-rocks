@@ -18,19 +18,46 @@ export const handleOAuthLogin = async (profile, account) => {
         data: {
           email: userData.email,
           password: "OAuth",
-          username: userData.username === undefined ? profile.name: userData.username,
+          username: profile.username,
           //role: account.provider,
         },
       });
     }
-   
+      /*
+      await prisma.account.create({
+        data: {
+          userId: user.id,
+          provider: accountData.provider,
+          access_token: accountData.access_token,
+          scope: accountData.scope,
+          token_type: accountData.token_type,
+        },
+      });
+      return user;
+    }
+*/
     // Log the user and account data for debugging
     console.log("********User:", userData);
     console.log("*******Account:", accountData);
-   //  console.log("*********User:", user);
-
+/*
+    await prisma.account.update({
+      where: {
+        userId: user.id, provider: account.provider
+      },
+      data: {
+        provider: accountData.provider,
+        access_token: accountData.access_token,
+        scope: accountData.scope,
+        token_type: accountData.token_type,
+        updatedAt: new Date(),
+      },
+    });
+    
+    return user;
+    */
 
     // Create or update the account associated with the user
+
     await prisma.account.upsert({
       where: {
         userId: user.id,
@@ -67,7 +94,6 @@ const extractUserDataFromProfile = (profile) => {
     email: profile.email,
     id: profile.id,
     sub: profile.sub,
-    username: profile.username,
   };
 };
 

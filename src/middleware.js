@@ -7,10 +7,10 @@ export default withAuth(function middleware(req) {
         
     // If the user is not an admin, redirect to the Denied page
         if (
-        req.nextUrl.pathname.startsWith("/pages/Forbidden") &&
+        req.nextUrl.pathname.startsWith("/Forbidden") &&
         req.nextauth.token.role != "Admin"
         ) {
-            return NextResponse.redirect(new URL("/pages/Denied", req.url));
+            return NextResponse.redirect(new URL("/Denied", req.url));
         }
     },
     {
@@ -21,4 +21,4 @@ export default withAuth(function middleware(req) {
     }
     );
 
-export const config = { matcher: ["/pages/Forbidden"] };
+export const config = { matcher: ["/Forbidden"] };
