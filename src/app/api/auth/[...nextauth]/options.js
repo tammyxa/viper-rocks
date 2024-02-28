@@ -100,7 +100,8 @@ export const options = {
     DiscordProvider({
       profile(profile, account) {
         // updates the account object to include the provider and role
-        // sending both account and profile to the handleOAuthLogin function is redundant, but it works like this. can be optimized later        account.provider = "Discord";
+        // sending both account and profile to the handleOAuthLogin function is redundant, but it works like this. can be optimized later        
+        account.provider = "Discord";
         account.role = "Discord User";
         profile.account = account;
 
@@ -171,7 +172,11 @@ export const options = {
     },
     // sets the user's role to the role property of the token
     async session({ session, token }) {
-      if (session?.user) session.user.role = token.role;
+      if (session?.user) {
+        session.user.role = token.role;
+        // upsert the session with the user's role
+        
+      }
       return session;
     },
   },
