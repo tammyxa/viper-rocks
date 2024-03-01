@@ -1,7 +1,5 @@
-import React from "react";
-
 interface DarkButtonProps {
-  children: React.ReactNode;
+  children: string;
 }
 
 export const DarkButton = ({ children }: DarkButtonProps) => {

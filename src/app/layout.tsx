@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import "./dist/css/explorer-1.min.css";
+import "@/dist/css/explorer-1.min.css";
 import { Footer, Nav } from "@/modules";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -21,7 +21,7 @@ export default function RootLayout({
       <head></head>
       <body>
         <Nav />
-        {children}
+        <div>{children}</div>
         <Footer />
         {/* <!-- JavaScript -->
         <script src="explorer-1.min.js" async></script> */}
