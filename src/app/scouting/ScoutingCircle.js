@@ -1,6 +1,6 @@
 "use client"
 
-import Background from './Background';
+import Background from '../components/Background';
 
 import React, { Component, useState } from 'react';
 import {Rect, Stage, Layer, Circle} from "react-konva";
@@ -22,9 +22,9 @@ const Scouting = () =>{
             x: position.x,
             y: position.y,
             position: { x: position.x, y: position.y }, // Record initial position
-            radius: 20,
+            radius: 8,
             fill: 'red',
-            opacity: 0.3,
+            opacity: 0.5,
             stroke: 'black'
         };
         setCircles([...circles, newCircle]);
