@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { DarkButton } from "@/components";
+import { DarkButton } from "./(components)/Button";
 
 export default function Home() {
   return (
