@@ -8,7 +8,7 @@ const ImageTilesWithBorders = () => {
   const [tiles, setTiles] = useState([]);
 
   useEffect(() => {
-    const imageUrl = 'Testbed1.jpg'; // Replace with your image URL
+    const imageUrl = '/Testbed1.jpg'; // Replace with your image URL
     const img = new window.Image();
     img.src = imageUrl;
     img.onload = () => {

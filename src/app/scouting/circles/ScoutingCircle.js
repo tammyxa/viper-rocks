@@ -1,6 +1,6 @@
 "use client"
 
-import Background from '../components/Background';
+import Background from '../../components/Background';
 
 import React, { Component, useState } from 'react';
 import {Rect, Stage, Layer, Circle} from "react-konva";
