@@ -1,4 +1,9 @@
-export const Nav = () => {
+import Link from "next/link";
+// import { getServerSession } from "next-auth";
+// import { options } from "../../api/auth/[...nextauth]/options";
+
+export const Nav = async () => {
+  // const session = await getServerSession(options);
   return (
     <>
       <header id="HeaderInternal" className="sticky top-0 z-30">
@@ -122,24 +127,24 @@ export const Nav = () => {
               <div className="lg:container mx-auto lg:flex justify-between">
                 <ul className="top-level lg:flex flex-nowrap lg:overflow-x-auto pt-6 lg:pt-0">
                   <li className="">
-                    <a href="#" className="block">
+                    <Link href="/" className="block">
                       <span className="inline-block" data-text="Home">
                         Home
                       </span>
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="#about" className="block">
+                    <Link href="/pages/AboutUs" className="block">
                       <span
                         className="inline-block text-gray-mid"
                         data-text="About Us"
                       >
                         About Us
                       </span>
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="#faq" className="block">
+                    <a href="/pages/FAQ" className="block">
                       <span
                         className="inline-block text-gray-mid"
                         data-text="Questions"
@@ -149,7 +154,7 @@ export const Nav = () => {
                     </a>
                   </li>
                   <li>
-                    <a href="#contact-us" className="block">
+                    <a href="/pages/ContactUs" className="block">
                       <span
                         className="inline-block text-gray-mid"
                         data-text="Contact Us"
