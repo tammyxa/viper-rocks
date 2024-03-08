@@ -1,9 +1,9 @@
-import React from 'react';
+import styles from "./aboutus.module.css";
 
 const AboutUs = () => {
   return (
-    <div className="about-us-container">
-      <section className="about-us-content">
+    <div className={styles.aboutuscontainer}>
+      <section className={styles.aboutuscontent}>
         <h2>Welcome to Our Story</h2>
         <p>
           At Viper Rocks, we are passionate about exploring the wonders of the universe.
@@ -12,28 +12,36 @@ const AboutUs = () => {
       
       </section>
 
-      <section className="team-section">
+      <section className={styles.teamsection}>
         <h2>Meet Our Team</h2>
-        <div className="team-member">
-          <img src="/images/team-member1.jpg" alt="Team Member 1" />
-          <p>
-            Member Of The Team
-            <br />
-            Their Role
-          </p>
+        <div className={styles.teammember}>
+          <div className={styles.frontend}>
+            <h4>UI/UX DESIGN</h4>
+                <ul>
+                    <li>Diana Arteaga-Andrade</li>
+                    <li>Chrisitan Gomez</li>
+                    <li>Santiago Bautista</li>
+                    <li>Angy Xajil</li>
+                    <li>Tammy Xaypraseuth</li>
+                </ul>
+
+          <div className={styles.backend}>
+            <h4>DATABASE DESIGN</h4>
+                <ul>
+                    <li>Kevin Andrade</li>
+                    <li>Michael Gibson</li>
+                    <li>Nida Sheikh</li>
+                    <li>Zainab Sulaiman</li>
+                    <li>Diane Tabilas</li>
+                </ul>
+            </div>
         </div>
-        <div className="team-member">
-          <img src="/images/team-member2.jpg" alt="Team Member 2" />
-          <p>
-            Member Of The Team
-            <br />
-            Their Role
-          </p>
+          
         </div>
         {/* Add more team members as needed */}
       </section>
 
-      <section className="values-section">
+      <section className={styles.valuessection}>
         <h2>Our Values</h2>
         <ul>
           <li>Curiosity</li>
