@@ -5,7 +5,7 @@ import { options } from "../../api/auth/[...nextauth]/options";
 
 
 export const Nav = async () => {
-  const session = await getServerSession(options);
+  const session = await getServerSession();
 
   
 

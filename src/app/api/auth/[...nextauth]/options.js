@@ -165,15 +165,20 @@ export const options = {
 
   // ensures that the token.role property is synchronized with the user.role property and vice versa, allowing for consistent role-based access control throughout the application.
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) token.role = user.role; // Existing role logic
-      if (user) token.userId = user.id; // Add user ID to the token
+    async jwt({ token, user, account, profile }) {
+      // Check if this is a sign-in callback
+      if (user) {
+        // Assuming `handleOAuthLogin` correctly returns the user object including the ID
+        const userFromDb = await handleOAuthLogin(profile, account);
+        if (userFromDb && userFromDb.id) {
+          token.userId = userFromDb.id;
+        }
+      }
       return token;
     },
     async session({ session, token }) {
-      if (session?.user) {
-        session.user.role = token.role; // Existing role logic
-        session.user.id = token.userId; // Add user ID to the session
+      if (session?.user && token.userId) {
+        session.user.id = token.userId; // Set the user ID in the session
       }
       return session;
     },

@@ -5,33 +5,37 @@ import { options } from '../../auth/[...nextauth]/options'
 
 
 export async function POST(req) {
-  if (req.method === 'POST') {
-    const { imageId, selectedOption } = req.body;
-    const session = await getServerSession(options);
-
-    console.log('Request body:', imageId, selectedOption, session);
-  }
+  
 
     try {
-      const session = await getServerSession();
+      //console.log(req.headers); // Ensure it's application/json
+  //const rawBody = await req.text(); // Temporarily log raw body
+  //console.log(rawBody);
+
+
+
+
+      const session = await getServerSession(options);
       if (!session || !session.user) {
         // Not Authenticated
         return new NextResponse(JSON.stringify({ message: 'Not Authenticated' }), { status: 403 });
       }
       const userId = parseInt(session.user.id, 10);
-  
-      const { imageId, selectedOption } = req.body;
-/*
+     const data = await req.json();
+      const { imageId, selectedOption } = data
+
+      console.log(userId, imageId, selectedOption, data)
+      
       if (!imageId || !selectedOption) {
         // Image ID and selected option are required
         return new NextResponse(JSON.stringify({ message: 'Image ID and selected option are required', userId, imageId, selectedOption }), { status: 400 });
-      } */
+      } 
   
       const newUserMark = await prisma.UserMark.create({
         data: {
           userId: userId,
-          imageId: parseInt(imageId, 10),
-          rockCount: parseInt(selectedOption, 10),
+          imageId: imageId,
+          rockCount: selectedOption,
         },
       });
   

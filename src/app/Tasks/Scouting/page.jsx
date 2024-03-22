@@ -29,7 +29,14 @@ const ScoutingPage = () => {
       if (images.length > 0 && currentIndex < images.length) {
         const currentImageId = images[currentIndex].id; // Access the current image's id
 
-        console.log(currentImageId, selectedOption);
+        console.log(currentImageId, parseInt(selectedOption, 10));
+
+        const test = JSON.stringify({
+          imageId: currentImageId,
+          selectedOption: parseInt(selectedOption, 10),
+        });
+
+        console.log(test);
   
         try {
           const response = await fetch('/api/scouting/rockcount', {
@@ -38,8 +45,8 @@ const ScoutingPage = () => {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              imageId: currentImageId, // Use the current image's ID here
-              selectedOption: selectedOption,
+              imageId: currentImageId,
+              selectedOption: parseInt(selectedOption, 10),
             }),
           });
   
