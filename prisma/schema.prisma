@@ -46,6 +46,47 @@ model Account {
 }
 
 
+
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  cameraId  Int      // many to one relationship with camera table (not implemented yet)
+  imageURL  String
+  captureDate DateTime
+  captureTime DateTime
+  roverLocation String
+  resolution String
+  pixelDensity String  //switch to user marks
+  rockQuadrants RockQuadrant[]
+}
+
+model RockQuadrant {
+  id        Int      @id @default(autoincrement())
+  imageId   Int 
+  x         Int
+  y         Int
+  width     Int
+  height    Int
+
+  rockCount Int?
+
+  image Image @relation(fields: [imageId], references: [id])
+}
+
+model UserMark {
+  id        Int    @id @default(autoincrement())
+  userId    Int
+  imageId   Int
+  quadrantId Int?
+  rockCount Int?
+
+
+  
+}
+
+
+
+
 //model Session {
 // id           String   @id @default(cuid())
 //  sessionToken String   @unique 
