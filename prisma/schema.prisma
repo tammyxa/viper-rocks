@@ -58,6 +58,8 @@ model Image {
   resolution String
   pixelDensity String  //switch to user marks
   rockQuadrants RockQuadrant[]
+
+  // bool scouted
 }
 
 model RockQuadrant {
@@ -80,6 +82,7 @@ model UserMark {
   quadrantId Int?
   rockCount Int?
 
+ @@unique([userId, imageId], name: "userId_imageId_unique")
 
   
 }

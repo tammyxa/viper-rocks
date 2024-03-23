@@ -6,39 +6,59 @@ import OptionSelector from '../../(components)/Scouting/OptionSelector';
 
 
 const ScoutingPage = () => {
+
+  // State hook for storing the array of images fetched from the API
     const [images, setImages] = useState([]);
+
+  // State hook for tracking the current index of the displayed image in the images array
     const [currentIndex, setCurrentIndex] = useState(0);
   
-    useEffect(() => {
-      const fetchImages = async () => {
+
+  // Fetches images from the '/api/images' endpoint when the page mounts
+  useEffect(() => {
+    const fetchImages = async () => {
+      // Attempt to load images from Local Storage first
+      const cachedImages = localStorage.getItem('cachedImages');
+      const imagesData = cachedImages ? JSON.parse(cachedImages) : null;
+
+      // Check if cache exists and is valid (e.g., less than 24 hours old)
+      const cacheIsValid = imagesData && new Date().getTime() - imagesData.timestamp < 86400000; // 24hours*60*60*1000
+
+      if (cacheIsValid) {
+        // Use cached images
+        setImages(imagesData.data);
+      } else {
+        // Fetch from API as cache is missing or outdated
         try {
           const response = await fetch('/api/images');
           if (!response.ok) throw new Error('Failed to fetch images');
           const data = await response.json();
+
+          // Update state with fetched images
           setImages(data);
+
+          // Cache the fetched images along with a timestamp
+          localStorage.setItem('cachedImages', JSON.stringify({ data, timestamp: new Date().getTime() }));
         } catch (error) {
           console.error('Error:', error);
         }
-      };
+      }
+    };
+
+    fetchImages();
+  }, []);
   
-      fetchImages();
-    }, []);
-  
+     // Function to handle submission of a selected option for the current image to the UserMark table
     const handleSubmit = async (selectedOption) => {
+
       // Ensure we have images and a current index to work with
       if (images.length > 0 && currentIndex < images.length) {
-        const currentImageId = images[currentIndex].id; // Access the current image's id
 
-        console.log(currentImageId, parseInt(selectedOption, 10));
+      // Access the current image's id
+        const currentImageId = images[currentIndex].id; 
 
-        const test = JSON.stringify({
-          imageId: currentImageId,
-          selectedOption: parseInt(selectedOption, 10),
-        });
-
-        console.log(test);
-  
         try {
+          // Attempts to submit the selected option to the '/api/scouting/rockcount' endpoint via POST request.
           const response = await fetch('/api/scouting/rockcount', {
             method: 'POST',
             headers: {
@@ -54,10 +74,10 @@ const ScoutingPage = () => {
             throw new Error('Failed to submit the option');
           }
   
+          // Parses the response data as JSON.
           const data = await response.json();
-          console.log("Response from server:", data);
   
-          // Advance to the next image after successful submission
+          // Updates the currentIndex state to display the next image upon successful submission, cycling back to the first image if necessary.
           setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
         } catch (error) {
           console.error('There was a problem with the fetch operation:', error);
@@ -65,6 +85,7 @@ const ScoutingPage = () => {
       }
     };
   
+    // Renders the ScoutingPage component.
     return (
       <div style={{ display: 'flex', justifyContent: 'space-between', padding: '20px' }}>
         <div style={{ flex: 1 }}>

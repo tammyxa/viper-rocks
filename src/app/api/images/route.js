@@ -14,8 +14,6 @@ export async function GET(req) {
       status: 200 // OK status
     });
   } catch (error) {
-    // If there's an error, return the error.
-    // This could be a Prisma error (e.g., connection issue) or a server error.
     return NextResponse.json({ message: "Error fetching images", error }, { status: 500 });
   } finally {
     // Disconnect from the Prisma client
