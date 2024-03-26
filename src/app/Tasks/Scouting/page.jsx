@@ -5,6 +5,8 @@ import DisplayImage from '../../(components)/Scouting/DisplayImage';
 import OptionSelector from '../../(components)/Scouting/OptionSelector';
 
 
+
+
 const ScoutingPage = () => {
 
   // State hook for storing the array of images fetched from the API
@@ -87,6 +89,7 @@ const ScoutingPage = () => {
   
     // Renders the ScoutingPage component.
     return (
+      <>
       <div style={{ display: 'flex', justifyContent: 'space-between', padding: '20px' }}>
         <div style={{ flex: 1 }}>
           {images.length > 0 && <DisplayImage image={images[currentIndex]} />}
@@ -95,6 +98,10 @@ const ScoutingPage = () => {
           <OptionSelector onSubmit={handleSubmit} />
         </div>
       </div>
+      <div>
+
+      </div>
+      </>
     );
   };
   

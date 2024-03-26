@@ -46,7 +46,7 @@ const UserForm = () => {
     }
 
     router.refresh();
-    router.push("/Public");
+    router.push("/AboutUs");
     
   } catch (error) {
     setErrorMessage(error.message);

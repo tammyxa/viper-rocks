@@ -77,7 +77,7 @@ export const Nav = async () => {
 
                   <div className="flex">
                   <Link
-                    href="/pages/CreateUser"
+                    href="/CreateUser"
                     className="flex flex-nowrap items-center focus:outline-none focus:ring-2 mr-2 py-1"
                   >
                     <span className="hidden lg:block mr-2">Join</span>

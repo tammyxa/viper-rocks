@@ -23,8 +23,10 @@ export async function POST(req) {
         return new NextResponse(JSON.stringify({ message: 'Not Authenticated' }), { status: 403 });
       }
 
+      console.log(session.user)
+
       // Get the user ID from the session
-      const userId = parseInt(session.user.id, 10);
+      const userId = session.user.id
 
       // Parse the request body
       const data = await req.json();
