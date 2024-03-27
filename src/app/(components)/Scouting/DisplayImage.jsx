@@ -1,11 +1,18 @@
-const DisplayImage = ({ image }) => {
+import React from 'react';
+import { Stage, Layer, Image } from 'react-konva';
+import useImage from 'use-image';
 
-  if (!image) return <div>No image to display</div>;
-// renders the current image
+const DisplayImage = ({ image }) => {
+  // Load the image using the useImage hook
+  const [konvaImage] = useImage(image.imageURL);
+
   return (
-    <div>
-      <img src={image.imageURL} alt="Displayed" style={{ maxWidth: '1200px', maxHeight: '800px' }} />
-    </div>
+    <Stage width={1500} height={1000}>
+      <Layer>
+        {/* Use the loaded Konva image object */}
+        <Image image={konvaImage} alt="Displayed"/>
+      </Layer>
+    </Stage>
   );
 };
 

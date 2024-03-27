@@ -211,13 +211,23 @@ export const Nav = async () => {
                       </span>
                     </Link>
                     </li>
-                    <li>
+                  <li>
                     <Link href="/Tasks/Scouting" className="block">
                       <span
                         className="inline-block text-gray-mid"
-                        data-text="Contact Us"
+                        data-text="Scouting"
                       >
                         Scouting
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/Tasks/Konva" className="block">
+                      <span
+                        className="inline-block text-gray-mid"
+                        data-text="Konva"
+                      >
+                        Konva
                       </span>
                     </Link>
                   </li>
