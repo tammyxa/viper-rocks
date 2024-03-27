@@ -232,16 +232,6 @@ export const Nav = async () => {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/Tasks/Konva" className="block">
-                      <span
-                        className="inline-block text-gray-mid"
-                        data-text="Konva"
-                      >
-                        Konva
-                      </span>
-                    </Link>
-                  </li>
-                  <li>
                     <Link href="/Tasks/Crop" className="block">
                       <span
                         className="inline-block text-gray-mid"
