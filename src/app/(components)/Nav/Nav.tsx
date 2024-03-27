@@ -211,16 +211,7 @@ export const Nav = async () => {
                       </span>
                     </Link>
                     </li>
-                    <li>
-                    <Link href="/Tasks/Scouting" className="block">
-                      <span
-                        className="inline-block text-gray-mid"
-                        data-text="Contact Us"
-                      >
-                        Scouting
-                      </span>
-                    </Link>
-                  </li>
+                    
                 </ul>
               </div>
             </div>
