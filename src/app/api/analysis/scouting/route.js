@@ -1,69 +1,65 @@
 // Import the Prisma client instance
-import prisma from '../../lib/prisma';
+import prisma from '../../../lib/prisma';
 import { NextResponse } from 'next/server'; // Import NextResponse
 
-export default async function handler(req) {
-  if (req.method !== 'GET') {
-    // Create a NextResponse for Method Not Allowed
-    return new NextResponse(JSON.stringify({ message: 'Method Not Allowed' }), {
-      status: 405,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-  }
-
+// Named export for GET request
+export async function GET(req, res) {
   try {
-    // Fetch unscouted images
-    const unscoutedImages = await prisma.image.findMany({
-      where: {
-        scouted: false,
-      },
-      select: {
-        id: true, // Only select the id to reduce data transfer
-      },
+    const minUserMarks = 3; // This seems to be unused in your provided code snippet
+
+    // Step 1: Fetch images that have not been scouted yet
+    const images = await prisma.image.findMany({
+      where: { Scouted: false },
+      select: { id: true },
     });
 
-    const imagesWithMultipleUserMarks = [];
-
-    for (const image of unscoutedImages) {
-      const scoutedCount = await prisma.userMark.groupBy({
-        by: ['imageId'],
-        where: {
-          imageId: image.id,
-        },
-        _count: {
-          userId: true,
-        },
-        having: {
-          userId: {
-            _count: {
-              gt: 1,
-            },
-          },
-        },
+    // Step 2 & 3: Iterate over each image to calculate the accepted value
+    const acceptedValues = await Promise.all(images.map(async (image) => {
+      // Fetch UserMarks for the current image
+      const userMarks = await prisma.userMark.findMany({
+        where: { imageId: image.id },
+        include: { user: true }, // Include user to access reliabilityScore directly
       });
 
-      if (scoutedCount.length > 0) {
-        imagesWithMultipleUserMarks.push(image.id);
-      }
-    }
+      // Step 4: Calculate the weighted average for rock counts
+      let totalWeight = 0;
+      let weightedSum = 0;
+      userMarks.forEach(mark => {
+        const weight = mark.user.reliabilityScore;
+        const rockCount = mark.rockCount;
+        weightedSum += rockCount * weight;
+        totalWeight += weight;
+      });
 
-    // Create a NextResponse for successful retrieval
-    return new NextResponse(JSON.stringify(imagesWithMultipleUserMarks), {
+      const weightedAverage = totalWeight > 0 ? weightedSum / totalWeight : 0;
+
+      return { imageId: image.id, acceptedValue: weightedAverage };
+    }));
+
+    // Log and return the results
+    return new NextResponse(JSON.stringify(acceptedValues), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
       },
     });
   } catch (error) {
-    console.error('Failed to retrieve data:', error);
-    // Create a NextResponse for Internal Server Error
-    return new NextResponse(JSON.stringify({ message: 'Internal Server Error' }), {
+    console.error('Error calculating accepted values:', error);
+    return new NextResponse(JSON.stringify({ error: 'Internal server error' }), {
       status: 500,
       headers: {
         'Content-Type': 'application/json',
       },
     });
   }
+}
+
+// Prevent POST requests as this function should only handle GET requests for fetching data
+export async function POST(req) {
+  return NextResponse.json(
+    { error: "Method not allowed" },
+    {
+      status: 405 // Method Not Allowed status
+    }
+  );
 }
