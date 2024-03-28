@@ -19,6 +19,7 @@ export const handleOAuthLogin = async (profile, account) => {
           email: userData.email,
           password: "OAuth",
           username: userData.username === undefined ? profile.name: userData.username,
+          profilePicture: userData.picture,
           //role: account.provider,
         },
       });
@@ -40,6 +41,8 @@ export const handleOAuthLogin = async (profile, account) => {
         provider: accountData.provider,
         access_token: accountData.access_token,
         scope: accountData.scope,
+        profilePicture: userData.picture,
+
         token_type: accountData.token_type,
         updatedAt: new Date(),
       },
@@ -68,6 +71,7 @@ const extractUserDataFromProfile = (profile) => {
     id: profile.id,
     sub: profile.sub,
     username: profile.username,
+    profilePicture: profile.picture,
   };
 };
 

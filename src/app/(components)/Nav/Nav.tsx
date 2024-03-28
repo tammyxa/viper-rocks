@@ -2,8 +2,13 @@ import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { options } from "../../api/auth/[...nextauth]/options";
 
+
+
 export const Nav = async () => {
-  const session = await getServerSession(options);
+  const session = await getServerSession();
+
+  
+
   return (
     <>
       <header id="HeaderInternal" className="sticky top-0 z-30">
@@ -72,7 +77,7 @@ export const Nav = async () => {
 
                   <div className="flex">
                   <Link
-                    href="/pages/CreateUser"
+                    href="/CreateUser"
                     className="flex flex-nowrap items-center focus:outline-none focus:ring-2 mr-2 py-1"
                   >
                     <span className="hidden lg:block mr-2">Join</span>
@@ -177,7 +182,7 @@ export const Nav = async () => {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/pages/AboutUs" className="block">
+                    <Link href="/AboutUs" className="block">
                       <span
                         className="inline-block text-gray-mid"
                         data-text="About Us"
@@ -187,24 +192,54 @@ export const Nav = async () => {
                     </Link>
                   </li>
                   <li>
-                    <a href="/pages/FAQ" className="block">
+                    <Link href="/FAQ" className="block">
                       <span
                         className="inline-block text-gray-mid"
                         data-text="Questions"
                       >
                         Questions
                       </span>
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/pages/ContactUs" className="block">
+                    <Link href="/ContactUs" className="block">
                       <span
                         className="inline-block text-gray-mid"
                         data-text="Contact Us"
                       >
                         Contact
                       </span>
-                    </a>
+                    </Link>
+                    </li>
+                  <li>
+                    <Link href="/Tasks/Scouting" className="block">
+                      <span
+                        className="inline-block text-gray-mid"
+                        data-text="Scouting"
+                      >
+                        Scouting
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/Tasks/Konva" className="block">
+                      <span
+                        className="inline-block text-gray-mid"
+                        data-text="Konva"
+                      >
+                        Konva
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/Tasks/Crop" className="block">
+                      <span
+                        className="inline-block text-gray-mid"
+                        data-text="Crop"
+                      >
+                        Crop
+                      </span>
+                    </Link>
                   </li>
                 </ul>
               </div>
