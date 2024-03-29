@@ -18,7 +18,7 @@ export default function Home() {
             Citizen Scientists Needed. Sign up to identify moon rocks for Viper
             rover expeditions.
           </span>
-          <DarkButton href="/Explore"> Explore </DarkButton>
+          <DarkButton href="/Dashboard"> Explore </DarkButton>
         </div>
       </div>
     </main>

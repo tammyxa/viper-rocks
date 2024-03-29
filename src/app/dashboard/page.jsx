@@ -1,7 +1,8 @@
 'use client';
 import styles from './dashboard.module.css';
-import TutorialModal from "../(components)/Tutorial Modal/TutorialModal.tsx";
+import TutorialModal from "../(components)/Tutorial Modal/TutorialModal";
 import { Fragment, useState } from 'react';
+import Link from "next/link";
 
 const Dashboard = () => {
 
@@ -25,16 +26,37 @@ const Dashboard = () => {
                     <h3>Checklist</h3>
                         <ul>
                             <li>
-                                <input type="checkbox" id="scouting" name="scouting" />
-                                <label htmlFor="scouting"> Scouting</label>
+                                <input type="checkbox" id="scouting" name="scouting" className="margin-left: 10px"/>
+                                {/* <button className="BaseButton bg-gray-500 hover:bg-red-600 text-white font-bold p-4 px-4 width:120px"> */}
+                                    <Link href="./Tasks/Scouting">
+                                        Scout
+                                    </Link>
+                                {/* </button> */}
+                                {/* <p className="text-subtitle text-gray-700">
+                                    Click to begin the scouting task.
+                                </p> */}
                             </li>
                             <li>
                                 <input type="checkbox" id="sizing" name="sizing" />
-                                <label htmlFor="sizing"> Sizing</label>
+                                {/* <button className="BaseButton bg-gray-500 hover:bg-red-600 text-white font-bold py-4 px-4 width:120px"> */}
+                                    <Link href="#">
+                                        Size
+                                    </Link>
+                                {/* </button> */}
+                                {/* <p className="text-subtitle text-gray-700">
+                                    Click to begin the sizing task.
+                                </p> */}
                             </li>
                             <li>
                                 <input type="checkbox" id="classification" name="classification" />
-                                <label htmlFor="classification"> Classification</label>
+                                {/* <button className="BaseButton bg-gray-500 hover:bg-red-600 text-white font-bold py-4 px-4 width:120px"> */}
+                                    <Link href="#">
+                                        Classify
+                                    </Link>
+                                {/* </button> */}
+                                {/* <p className="text-subtitle text-gray-700">
+                                    Click to begin the classification task.
+                                </p> */}
                             </li>
                         </ul>
                 </div>

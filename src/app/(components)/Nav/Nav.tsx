@@ -212,6 +212,16 @@ export const Nav = async () => {
                     </Link>
                   </li>
                   <li>
+                    <Link href="/Explore" className="block">
+                      <span
+                        className="inline-block text-gray-mid"
+                        data-text="Konva"
+                      >
+                        ExploreTest
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
                     <Link href="/Tasks/Konva" className="block">
                       <span
                         className="inline-block text-gray-mid"
