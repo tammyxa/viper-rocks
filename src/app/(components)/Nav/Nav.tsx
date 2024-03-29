@@ -77,7 +77,7 @@ export const Nav = async () => {
 
                   <div className="flex">
                   <Link
-                    href="/CreateUser"
+                    href="/pages/CreateUser"
                     className="flex flex-nowrap items-center focus:outline-none focus:ring-2 mr-2 py-1"
                   >
                     <span className="hidden lg:block mr-2">Join</span>
@@ -211,36 +211,7 @@ export const Nav = async () => {
                       </span>
                     </Link>
                     </li>
-                  <li>
-                    <Link href="/Tasks/Scouting" className="block">
-                      <span
-                        className="inline-block text-gray-mid"
-                        data-text="Scouting"
-                      >
-                        Scouting
-                      </span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/Tasks/Konva" className="block">
-                      <span
-                        className="inline-block text-gray-mid"
-                        data-text="Konva"
-                      >
-                        Konva
-                      </span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/Tasks/Crop" className="block">
-                      <span
-                        className="inline-block text-gray-mid"
-                        data-text="Crop"
-                      >
-                        Crop
-                      </span>
-                    </Link>
-                  </li>
+                    
                 </ul>
               </div>
             </div>
