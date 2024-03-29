@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { DarkButton } from "./(components)/Button";
-import Link from "next/link";
 
 export default function Home() {
   return (
@@ -19,7 +18,7 @@ export default function Home() {
             Citizen Scientists Needed. Sign up to identify moon rocks for Viper
             rover expeditions.
           </span>
-          <DarkButton > <Link href="/Explore" className="block"> Explore </Link>  </DarkButton>
+          <DarkButton href="/Explore"> Explore </DarkButton>
         </div>
       </div>
     </main>

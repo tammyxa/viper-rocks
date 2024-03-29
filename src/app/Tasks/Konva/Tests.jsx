@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Stage, Layer, Circle } from 'react-konva';
+import { Stage, Layer, Circle, Text } from 'react-konva';
 
 function Tests(props) {
   const [circles, setCircles] = useState([]);
@@ -18,6 +18,16 @@ function Tests(props) {
 
   return (
     <Stage width={window.innerWidth} height={window.innerHeight} onClick={handleStageClick}>
+      <Layer>
+        <Text
+          text="CLICK ON THE SCREEN AND DRAG THE CIRCLES!"
+          x={30}
+          y={5}
+          fontSize={30}
+          fontFamily="Comic Sans"
+          fill="black"
+        />
+      </Layer>
       <Layer>
         {circles.map((circle, index) => (
           <Circle
