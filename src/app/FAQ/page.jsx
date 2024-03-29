@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from "./faq.module.css";
 
 const QuestionsPage = () => {
   const faqs = [
@@ -18,12 +19,12 @@ const QuestionsPage = () => {
   ];
 
   return (
-    <div className="questions-page-container">
-      <section className="faqs-section">
+    <div className={styles.questionspagecontainer}>
+      <section className={styles.faqssection}>
         <h2>Frequently Asked Questions</h2>
-        <div className="faq-list">
+        <div className={styles.faqlist}>
           {faqs.map((faq, index) => (
-            <div key={index} className="faq-item">
+            <div key={index} className={styles.faqitem}>
               <h3>{faq.question}</h3>
               <p>{faq.answer}</p>
             </div>
