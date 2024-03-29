@@ -102,19 +102,37 @@ const ScoutingPage = () => {
         </div>
 
         <button
-          onClick={() =>
-            fetch("/api/analysis/scouting")
-              .then((response) => response.json())
-              .then((data) => {
-                console.log(data); // Do something with the data
-              })
-              .catch((error) => {
-                console.error("Error fetching the API:", error);
-              })
-          }
-        >
-          Aggregate
-        </button>
+  onClick={() => {
+    fetch("/api/analysis/scouting")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("GET request data:", data); // Log the data from GET request
+
+        // Now that we have the data from the GET request, we make the POST request
+        fetch("/api/analysis/scouting", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // Assuming 'data' from the GET request is the payload needed for the POST request
+          // Adjust the payload as necessary based on your API's expected request body structure
+          body: JSON.stringify({ acceptedValues: data }),
+        })
+          .then((postResponse) => postResponse.json())
+          .then((postData) => {
+            console.log("POST request response data:", postData); // Log the data from POST request
+          })
+          .catch((postError) => {
+            console.error("Error performing the POST request:", postError);
+          });
+      })
+      .catch((getError) => {
+        console.error("Error fetching the GET request data:", getError);
+      });
+  }}
+>
+  Aggregate
+</button>
       </div>
       <div></div>
     </>

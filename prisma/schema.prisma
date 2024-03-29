@@ -54,7 +54,8 @@ model Image {
   id        Int      @id @default(autoincrement())
   cameraId  Int      // many to one relationship with camera table (not implemented yet)
   imageURL  String
-  Scouted  Boolean  @default(false)
+  scouted  Boolean  @default(false)
+  rockCount Int?
   captureDate DateTime
   captureTime DateTime
   roverLocation String
@@ -73,7 +74,7 @@ model RockQuadrant {
   width     Int
   height    Int
 
-  rockCount Int?
+
 
   image Image @relation(fields: [imageId], references: [id])
 }
