@@ -80,11 +80,12 @@ export async function POST(req) {
     }));
 
     // If successful, respond with a 200 status and a success message
-    return new NextResponse(JSON.stringify({ message: 'Images updated successfully' }), {
+    return new NextResponse(JSON.stringify({ message: 'Images updated successfully', acceptedValues }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ acceptedValues }),
     });
   } catch (error) {
     console.error('Error updating images:', error);
