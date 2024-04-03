@@ -136,15 +136,22 @@ onClick={() => {
         headers: {
           "Content-Type": "application/json",
         },
-        // Assuming the postData contains the data needed for updating user reliability.
-        // Adjust the payload as necessary based on your backend requirements.
+       
         body: JSON.stringify({ acceptedRockCounts: postData.acceptedValues }),
       });
     })
+
+
+
+
     .then(updateResponse => updateResponse.json())
     .then(updateData => {
       console.log("POST request to /api/updateUserReliability response data:", updateData); // Log the data from the second POST request
     })
+
+
+
+
     .catch(error => {
       console.error("Error during the request chain:", error);
     });

@@ -69,12 +69,11 @@ model Image {
 model RockQuadrant {
   id        Int      @id @default(autoincrement())
   imageId   Int 
+  quadrantNumber Int
   x         Int
   y         Int
   width     Int
   height    Int
-
-
 
   image Image @relation(fields: [imageId], references: [id])
 }
