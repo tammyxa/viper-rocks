@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import DisplayImage from "../../(components)/Scouting/DisplayImage";
 import OptionSelector from "../../(components)/Scouting/OptionSelector";
 
+
 const ScoutingPage = () => {
   // State hook for storing the array of images fetched from the API
   const [images, setImages] = useState([]);
@@ -42,7 +43,7 @@ const ScoutingPage = () => {
 
           // Update state with fetched images
           setImages(data);
-
+          console.log("images", data);
           // Cache the fetched images along with a timestamp
           localStorage.setItem(
             "cachedImages",
@@ -83,6 +84,7 @@ const ScoutingPage = () => {
 
         // Parses the response data as JSON.
         const data = await response.json();
+     
 
         // Updates the currentIndex state to display the next image upon successful submission, cycling back to the first image if necessary.
         setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
