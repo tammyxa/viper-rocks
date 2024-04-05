@@ -19,7 +19,7 @@ const ExplorePage = () => {
 
         <div className="task mb-4">
           <button className="BaseButton bg-gray-500 hover:bg-red-600 text-white font-bold py-4 px-4 ">
-            <Link href="#" className="text-white">
+            <Link href="./Tasks/Sizing" className="text-white">
               Size
             </Link>
           </button>
