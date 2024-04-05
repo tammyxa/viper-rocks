@@ -1,17 +1,15 @@
-import { Stage, Layer, Image } from 'react-konva';
-import useImage from "use-image";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Stage, Layer, Image, Line } from 'react-konva';
+import useImage from 'use-image';
 
-function DisplayQuadrant({quadrant}) {
+const DisplayQuadrant = ({ quadrant }) => {
   const [konvaImage] = useImage(quadrant.image.imageURL);
-  console.log(quadrant, "quadrant");
-  // Use state to hold the window dimensions
-  const [dimensions, setDimensions] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
+  const [labels, setLabels] = useState([]);
+  const [drawing, setDrawing] = useState(false);
+  const [points, setPoints] = useState([]);
+  const initialDimensions = useRef({ width: window.innerWidth, height: window.innerHeight });
+  const [dimensions, setDimensions] = useState({ ...initialDimensions.current });
 
-  // Update dimensions on window resize
   useEffect(() => {
     const handleResize = () => {
       setDimensions({
@@ -24,28 +22,103 @@ function DisplayQuadrant({quadrant}) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    if (initialDimensions.current.width === 0 || initialDimensions.current.height === 0) return; // Prevents division by zero
+
+    const scaleWidth = dimensions.width / initialDimensions.current.width;
+    const scaleHeight = dimensions.height / initialDimensions.current.height;
+
+    const scaledLabels = labels.map(label =>
+      label.map(({ x, y }) => ({
+        x: x * scaleWidth,
+        y: y * scaleHeight,
+      }))
+    );
+
+    setLabels(scaledLabels);
+    // Rescale ongoing drawing points if the window is resized mid-drawing
+    if (drawing) {
+      const scaledPoints = points.map(({ x, y }) => ({
+        x: x * scaleWidth,
+        y: y * scaleHeight,
+      }));
+      setPoints(scaledPoints);
+    }
+  }, [dimensions]); // Depend on dimensions to trigger recalculation
+
+  const handleMouseDown = (e) => {
+    const stage = e.target.getStage();
+    const { x, y } = stage.getPointerPosition();
+    setDrawing(true);
+    setPoints([...points, { x, y }]);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!drawing) return;
+    const stage = e.target.getStage();
+    const { x, y } = stage.getPointerPosition();
+    setPoints([...points, { x, y }]);
+  };
+
+  const handleMouseUp = () => {
+    setDrawing(false);
+    setLabels([...labels, points]);
+    setPoints([]);
+  };
+  
+    const handleExport = () => {
+      console.log('Exporting labels:', labels);
+      // Further process or save the labels data as needed
+  };
+ 
+
   if (!quadrant) return <div>No image to display</div>;
 
+
   return (
-    <Stage width={dimensions.width} height={dimensions.height}>
-      <Layer>
-        <Image
-          image={konvaImage}
-          // Use the entire stage size for the image, ignoring original aspect ratio
-          width={dimensions.width} 
-          height={dimensions.height}
-          // Specify the crop region from the original image
-          crop={{
-            x: quadrant.x,
-            y: quadrant.y,
-            width: quadrant.width,
-            height: quadrant.height,
-          }}
-          alt="Displayed"
-        />
-      </Layer>
-    </Stage>
+    <>
+      <Stage
+        width={dimensions.width}
+        height={dimensions.height}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+      >
+        <Layer>
+          <Image
+            image={konvaImage}
+            width={dimensions.width}
+            height={dimensions.height}
+            crop={{
+              x: quadrant.x,
+              y: quadrant.y,
+              width: quadrant.width,
+              height: quadrant.height,
+            }}
+            alt="Displayed"
+          />
+          {labels.map((label, i) => (
+            <Line
+              key={i}
+              points={label.flatMap(p => [p.x, p.y])}
+              stroke="red"
+              strokeWidth={2}
+              closed={true}
+              fill="rgba(255, 0, 0, 0.3)"
+            />
+          ))}
+          {drawing && (
+            <Line
+              points={points.flatMap(p => [p.x, p.y])}
+              stroke="red"
+              strokeWidth={2}
+            />
+          )}
+        </Layer>
+      </Stage>
+      <button onClick={handleExport}>Export Data</button>
+    </>
   );
-}
+};
 
 export default DisplayQuadrant;
