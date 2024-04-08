@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import DisplayImage from "../../(components)/Scouting/DisplayImage";
 import OptionSelector from "../../(components)/Scouting/OptionSelector";
 
+
 const ScoutingPage = () => {
   // State hook for storing the array of images fetched from the API
   const [images, setImages] = useState([]);
@@ -42,7 +43,7 @@ const ScoutingPage = () => {
 
           // Update state with fetched images
           setImages(data);
-
+          console.log("images", data);
           // Cache the fetched images along with a timestamp
           localStorage.setItem(
             "cachedImages",
@@ -83,6 +84,7 @@ const ScoutingPage = () => {
 
         // Parses the response data as JSON.
         const data = await response.json();
+     
 
         // Updates the currentIndex state to display the next image upon successful submission, cycling back to the first image if necessary.
         setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
@@ -130,28 +132,35 @@ const ScoutingPage = () => {
               .then(postData => {
                 console.log("POST request response data:", postData); // Log the data from POST request
 
-                // After the POST request to /api/analysis/scouting, make a POST request to /api/updateUserReliability
-                return fetch("/api/analysis/updateUserReliability", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  // Assuming the postData contains the data needed for updating user reliability.
-                  // Adjust the payload as necessary based on your backend requirements.
-                  body: JSON.stringify({ acceptedRockCounts: postData.acceptedValues }),
-                });
-              })
-              .then(updateResponse => updateResponse.json())
-              .then(updateData => {
-                console.log("POST request to /api/updateUserReliability response data:", updateData); // Log the data from the second POST request
-              })
-              .catch(error => {
-                console.error("Error during the request chain:", error);
-              });
-          }}
-      >
-        Aggregate
-      </button>
+      // After the POST request to /api/analysis/scouting, make a POST request to /api/updateUserReliability
+      return fetch("/api/analysis/updateUserReliability", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+       
+        body: JSON.stringify({ acceptedRockCounts: postData.acceptedValues }),
+      });
+    })
+
+
+
+
+    .then(updateResponse => updateResponse.json())
+    .then(updateData => {
+      console.log("POST request to /api/updateUserReliability response data:", updateData); // Log the data from the second POST request
+    })
+
+
+
+
+    .catch(error => {
+      console.error("Error during the request chain:", error);
+    });
+}}
+>
+  Aggregate
+</button>
       </div>
       <div></div>
     </>
