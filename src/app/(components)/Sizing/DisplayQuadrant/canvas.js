@@ -9,6 +9,7 @@ const DisplayQuadrant = ({ quadrant }) => {
   const [points, setPoints] = useState([]);
   const initialDimensions = useRef({ width: window.innerWidth, height: window.innerHeight });
   const [dimensions, setDimensions] = useState({ ...initialDimensions.current });
+  const [imageDimensions, setImageDimensions] = useState({width:quadrant.width, height:quadrant.height,})
 
   useEffect(() => {
     const handleResize = () => {
@@ -66,14 +67,21 @@ const DisplayQuadrant = ({ quadrant }) => {
     setPoints([]);
   };
   
-    const handleExport = () => {
-      console.log('Exporting labels:', labels);
-      // Further process or save the labels data as needed
+  const handleExport = () => {
+    console.log(imageDimensions);
+
+    const roundedLabels = labels.map(label =>
+      label.map(({ x, y }) => ({
+        x: Math.round((x / window.innerWidth) * imageDimensions.width),
+        y: Math.round((y / window.innerHeight) * imageDimensions.height),
+      }))
+    );
+
+    console.log('Exporting labels:', roundedLabels);
+    // Further process or save the rounded labels data as needed
   };
- 
 
   if (!quadrant) return <div>No image to display</div>;
-
 
   return (
     <>
