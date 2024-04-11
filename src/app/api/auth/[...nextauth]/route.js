@@ -1,23 +1,20 @@
 
-// OAuth
-import NextAuth from "next-auth";
-import {options} from "./options";
-// Email and Password
+// Import necessary modules and dependencies
+import NextAuth from "next-auth"; //Oauth
+import { PrismaAdapter } from "@next-auth/prisma-adapter"; //Email and Password
+import { PrismaClient } from "@prisma/client"; //Email and Passowrd
+import { options } from "./options"; // Import authentication options OAuth
 
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
-
-// OAuth
-const handler = NextAuth(options);
-
-
-// Email and Password
+// Create a new instance of PrismaClient for database operations
 const prisma = new PrismaClient();
 
-// Email and Password, configures the adapter to use Prisma (ORM)
-export const authOptions = {
-    adapter: PrismaAdapter(prisma),
+// Configure the adapter to use Prisma for email/password authentication
+const authOptions = {
+  adapter: PrismaAdapter(prisma),
 };
 
-//
+// OAuth authentication handler using options defined in options.js
+const handler = NextAuth(options);
+
+// Export the OAuth authentication handler
 export default handler;
