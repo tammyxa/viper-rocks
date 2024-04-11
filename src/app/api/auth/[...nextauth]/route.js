@@ -11,13 +11,12 @@ const prisma = new PrismaClient();
 const adapter = PrismaAdapter(prisma);
 
 // Initialize NextAuth with the provided options and adapter
-const handler = NextAuth({
+const authHandler = NextAuth({
   ...options,
   adapter,
 });
 
 // Define the API route handler function
 export default async (req, res) => {
-  // Forward the request to NextAuth's request handler
-  await handler(req, res);
+  await authHandler(req, res); // Forward the request to NextAuth's request handler
 };
