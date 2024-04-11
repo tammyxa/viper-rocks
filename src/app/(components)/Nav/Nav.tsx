@@ -1,12 +1,31 @@
+"use client"
+
 import Link from "next/link";
-import { getServerSession } from "next-auth";
+import { getServerSession, Session } from "next-auth";
+import { useState, useEffect } from "react";
 import { options } from "../../api/auth/[...nextauth]/options";
 
 
 
-export const Nav = async () => {
-  const session = await getServerSession();
+export const Nav = () => {
+  
+  // const session = await getServerSession();
 
+  const [session, setSession] = useState<Session | null>(null);
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      try {
+        const sessionData = await getServerSession();
+        setSession(sessionData);
+      } catch (error) {
+        console.error('Error fetching session:', error);
+        setSession(null);
+      }
+    };
+
+    fetchSession();
+  }, []);
   
 
   return (
