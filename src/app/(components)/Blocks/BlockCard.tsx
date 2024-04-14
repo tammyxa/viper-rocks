@@ -10,13 +10,13 @@ interface BlockCardProps {
 export const BlockCard = ({ title, name, text, img }: BlockCardProps) => {
   return (
     <div id="storyRoot" className="max-w-xl">
-      <div className="shadow-jpl relative h-full  ">
+      <div className="shadow-jpl relative h-full bg-white">
         <div className="h-auto">
           <div>
             <div className="BaseImagePlaceholder dark-theme aspect-ratio-sixteen-nine ">
               <div>
                 <Image
-                  className="BaseImage  object-cover lazyload"
+                  className="BaseImage object-cover lazyload"
                   src={img || "/astronaut.jpg"}
                   alt={name}
                   width="800"

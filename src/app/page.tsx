@@ -24,10 +24,27 @@ export default function Home() {
         </div>
       </div>
       <div id="#about-us">
-        <div className="absolute min-h-screen min-w-full bg-cover bg-center"></div>
-        <div className="relative flex flex-col p-24">
-          <span className="text-h1-alt text-center">MEET OUR TEAM</span>
-          <BlockCardGroup cards={OurTeamData} />
+        <div className="bg-white">
+          <div id="our-story" className="p-24 flex">
+            <span className="text-h2 text-black mr-10">OUR STORY</span>
+            <span className="text-subtitle flex justify-center items-center text-black">
+              At Viper Rocks, we are passionate about exploring the wonders of
+              the universe. Our mission is to bring the excitement of space
+              exploration to everyone. Our Values: Curiosity Innovation
+              Collaboration Education
+            </span>
+          </div>
+        </div>
+        <div
+          className="relative flex flex-col p-24 bg-fixed bg-center bg-no-repeat bg-cover"
+          style={{ backgroundImage: "url(/space.webp)" }}
+        >
+          <span className="text-h1 mb-10 text-center text-white">
+            MEET THE TEAM
+          </span>
+          <div>
+            <BlockCardGroup cards={OurTeamData} />
+          </div>
         </div>
       </div>
     </main>
