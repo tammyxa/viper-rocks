@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Stage, Layer, Image, Line } from 'react-konva';
 import useImage from 'use-image';
 
-const DisplayQuadrant = ({ quadrant }) => {
+const DisplayQuadrant = ({ quadrant, labels, setLabels }) => {
   const [konvaImage] = useImage(quadrant.image.imageURL);
-  const [labels, setLabels] = useState([]);
   const [history, setHistory] = useState([]);
   const [future, setFuture] = useState([]);
   const [drawing, setDrawing] = useState(false);
@@ -16,25 +15,10 @@ const DisplayQuadrant = ({ quadrant }) => {
       const scale = Math.min(window.innerWidth / quadrant.width, window.innerHeight / quadrant.height);
       setDimensions({ width: quadrant.width * scale, height: quadrant.height * scale });
     };
-
     window.addEventListener('resize', resizeHandler);
     resizeHandler();
-
     return () => window.removeEventListener('resize', resizeHandler);
   }, [quadrant.width, quadrant.height]);
-
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if ((event.ctrlKey || event.metaKey) && event.key === 'z') {
-        undo();
-      } else if ((event.ctrlKey || event.metaKey) && event.key === 'y') {
-        redo();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [history, future]); // Listen for undo and redo shortcuts
 
   const handleMouseDown = (e) => {
     const stage = e.target.getStage();
@@ -56,10 +40,6 @@ const DisplayQuadrant = ({ quadrant }) => {
     setHistory([...history, labels]);
     setFuture([]);
     setPoints([]);
-  };
-
-  const handleExport = () => {
-    console.log('Exporting labels:', labels);
   };
 
   const undo = () => {
@@ -118,7 +98,6 @@ const DisplayQuadrant = ({ quadrant }) => {
           )}
         </Layer>
       </Stage>
-      <button onClick={handleExport}>Export Data</button>
       <button onClick={undo}>Undo</button>
       <button onClick={redo}>Redo</button>
     </>
