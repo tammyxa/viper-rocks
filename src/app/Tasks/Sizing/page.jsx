@@ -39,7 +39,10 @@ const SizingPage = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(geoData)
+      body: JSON.stringify({
+        geometries: geoData,
+        quadrant: quadrants[currentIndex],
+      })
     });
     if (response.ok) {
       console.log('Submission successful');

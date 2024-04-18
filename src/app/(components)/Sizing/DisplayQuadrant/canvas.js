@@ -36,6 +36,16 @@ const DisplayQuadrant = ({ quadrant, labels, setLabels }) => {
 
   const handleMouseUp = () => {
     setDrawing(false);
+
+    // Ensure the polygon is closed by checking if the first and last points are the same
+    if (points.length > 0) {
+      const firstPoint = points[0];
+      const lastPoint = points[points.length - 1];
+      if (Math.round(lastPoint.x) !== Math.round(firstPoint.x) || Math.round(lastPoint.y) !== Math.round(firstPoint.y)) {
+        points.push({ x: firstPoint.x, y: firstPoint.y });
+      }
+    }
+
     setLabels([...labels, points]);
     setHistory([...history, labels]);
     setFuture([]);

@@ -62,7 +62,9 @@ export const options = {
         // sets the user role based on the provider
         let userRole = "Google User";
 
-        handleOAuthLogin(profile, account);
+         let user = handleOAuthLogin(profile, account);
+
+         console.log(user);
         return {
           ...profile,
           id: profile.sub,
@@ -174,13 +176,11 @@ export const options = {
     async jwt({ token, user, profile, account }) {
     // Check if the sign-in process is ongoing by verifying if `user` is defined.
       if (user) {
-        console.log(user);
          // This condition checks if the login is OAuth-based since `account` is defined for OAuth providers.
         if (account) {
           token.loginType = account.provider; // e.g., "google", "github"
            // Fetch or create the user in the database based on the OAuth profile and store the result in `userFromDb`.
           const userFromDb = await handleOAuthLogin(profile, account);
-          console.log(userFromDb);
            // Check if the database user operation was successful and has an ID.
           if (userFromDb && userFromDb.id) {
             token.userId = userFromDb.id; // Store the user's database ID in the token
@@ -203,6 +203,7 @@ export const options = {
         session.user.id = token.userId; // Set the user ID in the session
         session.user.name = token.name; // Set the user's name in the session, if stored in the token
         session.user.loginType = token.loginType;
+
       }
       return session;
     },

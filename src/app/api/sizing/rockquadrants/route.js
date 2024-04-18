@@ -10,7 +10,7 @@ export async function GET(req) {
     try {
    
         const rockQuadrants = await prisma.RockQuadrant.findMany({
-            // Optionally, you can include the related Image data for each quadrant
+         
             include: {
               image: true,
             },

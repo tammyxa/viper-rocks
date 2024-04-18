@@ -56,6 +56,9 @@ export const handleOAuthLogin = async (profile, account) => {
         token_type: accountData.token_type,
       },
     });
+
+    console.log("********this one:", user);
+
     return user;
     
   } catch (error) {

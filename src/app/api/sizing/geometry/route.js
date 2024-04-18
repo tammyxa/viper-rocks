@@ -32,7 +32,7 @@ export async function POST(req) {
   //console.log(rawBody);
 
 
-/*
+
       // Get the user session
       const session = await getServerSession(options);
 
@@ -47,14 +47,44 @@ export async function POST(req) {
       // Get the user ID from the session
       const userId = session.user.id
 
-*/
 
 
-      const geometries = await req.json();
 
-      const { points } = geometries;
+      const data = await req.json();
 
-      console.log(geometries, "points");
+      const { geometries, quadrant } = data;
+
+      console.log(geometries, quadrant, userId);
+
+
+   
+     // Process each geometry
+     const results = [];
+     for (const geometry of geometries) {
+        if (geometry.type === 'Polygon' && geometry.coordinates.length > 0) {
+            // Convert each ring to a string and join all rings separated by commas
+            const wktRings = geometry.coordinates.map(ring => 
+                `(${ring.map(point => `${point[0]} ${point[1]}`).join(', ')})`
+            ).join(', ');
+
+                console.log("wktRings", wktRings);
+
+            const wkt = `POLYGON(${wktRings})`;
+
+            console.log("wkt", wkt);
+            
+            const insertResult = await prisma.$executeRawUnsafe(
+                `INSERT INTO "UserGeometry" ("userId","geom") VALUES ($1, ST_GeomFromText($2)) RETURNING id;`,
+                userId, // First placeholder $1 to safely pass value
+                wkt     // Second placeholder $2
+            );
+
+            console.log("insertResult", insertResult);
+            results.push(insertResult);
+        }
+    }
+
+      //console.log("complete!");
 /*
     await prisma.$transaction(async (prisma) => {
       for (const geometry of geometries) {
@@ -65,9 +95,9 @@ export async function POST(req) {
       */
   
       // Successfully created the new user mark
-      return new NextResponse(JSON.stringify({ message: 'Geometries saves successfully', geometries }), { status: 200 });
+      return new NextResponse(JSON.stringify({ message: 'Geometries saves successfully', results }), { status: 200 });
     } catch (error) {
-      console.error('Error creating new user mark:');
+      console.error('Error creating new geometry in database:');
       return new NextResponse(JSON.stringify({
         message: 'Internal Server Error',
         error: error.message,
