@@ -8,47 +8,36 @@ export const handleOAuthLogin = async (profile, account) => {
     const accountData = extractAccountData(account);
 
     // Check if the user exists in the database
-    let user = await prisma.user.findUnique({
+    // Attempt to find an existing user or create a new one
+    const user = await prisma.user.upsert({
       where: { email: userData.email },
+      update: {},
+      create: {
+        email: userData.email,
+        password: "OAuth",  
+        username: userData.username || profile.name,
+      },
     });
 
-    // If the user doesn't exist, create a new user
-    if (!user) {
-      user = await prisma.user.create({
-        data: {
-          email: userData.email,
-          password: "OAuth",
-          username: userData.username === undefined ? profile.name: userData.username,
-          profilePicture: userData.picture,
-          //role: account.provider,
-        },
-      });
-    }
-   
-    // Log the user and account data for debugging
-    console.log("********User:", userData);
-    console.log("*******Account:", accountData);
-   //  console.log("*********User:", user);
+    console.log("User:", user);
 
-
-    // Create or update the account associated with the user
+    // Upsert the account linked to the user
+    const accountId = accountData.provider === 'Google' ? String(userData.sub) : String(userData.id);
     await prisma.account.upsert({
       where: {
-        userId: user.id,
-        id: accountData.provider === 'Google' ? String(userData.sub) : String(userData.id),
+          id: accountId,
+          userId: user.id,
+          provider: accountData.provider
+      
       },
       update: {
-        provider: accountData.provider,
         access_token: accountData.access_token,
         scope: accountData.scope,
-        profilePicture: userData.picture,
-
         token_type: accountData.token_type,
         updatedAt: new Date(),
       },
-
       create: {
-        id: accountData.provider === 'Google' ? String(userData.sub) : String(userData.id),
+        id: accountId,
         userId: user.id,
         provider: accountData.provider,
         access_token: accountData.access_token,
@@ -57,9 +46,9 @@ export const handleOAuthLogin = async (profile, account) => {
       },
     });
 
-    console.log("********this one:", user);
+console.log("USERRR: ", user);
 
-    return user;
+    return user;  // Return the user object, including the user's database ID
     
   } catch (error) {
     console.error("Error handling OAuth login:", error);
