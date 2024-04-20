@@ -1,9 +1,17 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import DisplayImage from '../../(components)/Scouting/DisplayImage'; //probably need to change
 import OptionSelector from '../../(components)/Classification/OptionSelector';
-import SampleImages from "../../(components)/Classification/SampleImages";
+import dynamic from 'next/dynamic';
+
+
+const SampleImages = dynamic(() => import('../../(components)/Classification/SampleImages'), {
+  ssr: false,
+});
+
+const DisplayImage = dynamic(() => import('../../(components)/Scouting/DisplayImage'), {
+  ssr: false,
+});
 
 const ClassificationPage = () => {
   // State hook for storing the array of images fetched from the API

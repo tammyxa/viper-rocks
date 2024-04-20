@@ -17,7 +17,8 @@ import DiscordProvider from "next-auth/providers/discord";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "../../../lib/prisma";
 import bcrypt from "bcrypt";
-import { handleOAuthLogin } from "../../users/OAuthLogin/route";
+import { handleOAuthLogin } from "./authHandler"
+// import { handleOAuthLogin } from "../../users/OAuthLogin/route";
 
 export const options = {
   providers: [

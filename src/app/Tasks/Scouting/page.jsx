@@ -1,8 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import DisplayImage from "../../(components)/Scouting/DisplayImage";
 import OptionSelector from "../../(components)/Scouting/OptionSelector";
+import dynamic from 'next/dynamic';
+
+const DisplayImage = dynamic(() => import('../../(components)/Scouting/DisplayImage'), {
+  ssr: false,
+});
 
 
 const ScoutingPage = () => {
