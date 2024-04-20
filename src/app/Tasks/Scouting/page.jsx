@@ -1,9 +1,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import DisplayImage from "../../(components)/Scouting/DisplayImage";
+import dynamic from 'next/dynamic';
+
 import OptionSelector from "../../(components)/Scouting/OptionSelector";
 
+
+const DisplayImage = dynamic(() => import('../../(components)/Scouting/DisplayImage'), {
+  ssr: false,
+});
 
 const ScoutingPage = () => {
   // State hook for storing the array of images fetched from the API

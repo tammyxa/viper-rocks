@@ -33,7 +33,7 @@ const SizingPage = () => {
       type: 'Polygon',
       coordinates: [label.map(point => [point.x, point.y])]
     }));
-    console.log('Submitting...', geoData);
+    console.log('Submitting...', geoData, quadrants[currentIndex]);
     const response = await fetch('/api/sizing/geometry', {
       method: 'POST',
       headers: {
@@ -70,6 +70,7 @@ const SizingPage = () => {
           />
         )}
         <button onClick={handleSubmit}>Submit</button>
+        
       </div>
     </>
   );

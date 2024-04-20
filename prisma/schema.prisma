@@ -52,7 +52,9 @@ model Image {
   pixelDensity  String
   rockCount     Int?
   scouted       Boolean        @default(false)
+  numQuadrants  Int?
   rockQuadrants RockQuadrant[]
+  UserGeometry  UserGeometry[]
 }
 
 model RockQuadrant {
@@ -78,10 +80,12 @@ model UserMark {
 }
 
 model UserGeometry {
-  id     Int                      @id @default(autoincrement())
-  userId Int
-  geom   Unsupported("geometry(POLYGON)")
-  user   User                     @relation(fields: [userId], references: [id])
+  id      Int                    @id @default(autoincrement())
+  userId  Int
+  drawing Unsupported("raster")?
+  imageId Int
+  user    User                   @relation(fields: [userId], references: [id])
+  Image   Image                  @relation(fields: [imageId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_usergeometry_image")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.

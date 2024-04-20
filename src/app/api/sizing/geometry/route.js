@@ -23,8 +23,13 @@ import { NextResponse } from 'next/server';
 import { options } from '../../auth/[...nextauth]/options'
 
 
+
+
 export async function POST(req) {
-  
+  if (req.method !== 'POST') {
+    res.status(405).json({ message: 'Method not allowed' });
+    return;
+}
 
     try {
       //console.log(req.headers); // Ensure it's application/json
@@ -42,67 +47,63 @@ export async function POST(req) {
         return new NextResponse(JSON.stringify({ message: 'Not Authenticated' }), { status: 403 });
       }
 
-      console.log(session.user)
-
-      // Get the user ID from the session
-      const userId = session.user.id
 
 
 
 
       const data = await req.json();
+    const { geometries, quadrant } = data;
+    const userId = session.user.id;
+    const imageId = quadrant.image.id; // Assuming each image/quadrant has an ID
 
-      const { geometries, quadrant } = data;
+     // Use static dimensions for all images
+     const imageWidth = 1500;
+     const imageHeight = 1000;
+ 
 
-      console.log(geometries, quadrant, userId);
+ // Debugging: log variables to check for undefined
+ console.log(`userId: ${userId}, imageId: ${imageId}, imageWidth: ${imageWidth}, imageHeight: ${imageHeight}`);
 
 
-   
-     // Process each geometry
-     const results = [];
-     for (const geometry of geometries) {
-        if (geometry.type === 'Polygon' && geometry.coordinates.length > 0) {
-            // Convert each ring to a string and join all rings separated by commas
-            const wktRings = geometry.coordinates.map(ring => 
-                `(${ring.map(point => `${point[0]} ${point[1]}`).join(', ')})`
-            ).join(', ');
+    const quadrantWidth = quadrant.width;
+    const quadrantHeight = quadrant.height;
+    const n = Math.sqrt(quadrant.image.numQuadrants); // Assuming the number of quadrants is a perfect square
+    const quadrantIndex = quadrant.quadrantNumber - 1;
+    const qx = quadrantIndex % n; // Column index of the quadrant
+    const qy = Math.floor(quadrantIndex / n); // Row index of the quadrant
 
-                console.log("wktRings", wktRings);
+    await prisma.$transaction(
+      geometries.map(geometry => {
+        const globalCoordinates = geometry.coordinates[0].map(p => {
+          const gx = Math.round(quadrant.x + p.x);
+          const gy = Math.round(quadrant.y + p.y);
+          return `${gx} ${gy}`;
+        }).join(", ");
 
-            const wkt = `POLYGON(${wktRings})`;
+        const wkt = `POLYGON((${globalCoordinates}))`;
+        const rasterQuery = `
+          WITH geom AS (
+            SELECT ST_GeomFromText('${wkt}', 4326) AS geom
+          ),
+          raster AS (
+            SELECT ST_AsRaster(geom.geom, ${imageWidth}, ${imageHeight}, '8BUI', 255) AS rast
+            FROM geom
+          )
+          INSERT INTO "UserGeometry" ("userId", "imageId", "drawing")
+          SELECT ${userId}, ${imageId}, raster.rast FROM raster
+          RETURNING id;
+        `;
 
-            console.log("wkt", wkt);
-            
-            const insertResult = await prisma.$executeRawUnsafe(
-                `INSERT INTO "UserGeometry" ("userId","geom") VALUES ($1, ST_GeomFromText($2)) RETURNING id;`,
-                userId, // First placeholder $1 to safely pass value
-                wkt     // Second placeholder $2
-            );
+        return prisma.$executeRawUnsafe(rasterQuery);
+      })
+    );
 
-            console.log("insertResult", insertResult);
-            results.push(insertResult);
-        }
-    }
-
-      //console.log("complete!");
-/*
-    await prisma.$transaction(async (prisma) => {
-      for (const geometry of geometries) {
-        await prisma.$executeRaw`INSERT INTO your_table_name (geom) VALUES (ST_GeomFromGeoJSON(${JSON.stringify(geometry)}))`;
-      }
-    });
-    res.status(200).json({ message: 'Geometries saved successfully' });
-      */
-  
-      // Successfully created the new user mark
-      return new NextResponse(JSON.stringify({ message: 'Geometries saves successfully', results }), { status: 200 });
-    } catch (error) {
-      console.error('Error creating new geometry in database:');
-      return new NextResponse(JSON.stringify({
-        message: 'Internal Server Error',
-        error: error.message,
-        requestBody: req.body 
-      }), { status: 500 });
-    }
+    return new NextResponse(JSON.stringify({ message: 'Geometries saved successfully' }), { status: 200 });
+  } catch (error) {
+    console.error('Error handling POST request:', error);
+    return new NextResponse(JSON.stringify({
+      message: 'Internal Server Error',
+      error: error.message
+    }), { status: 500 });
   }
-  
+}
