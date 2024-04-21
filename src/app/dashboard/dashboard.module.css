@@ -1,0 +1,33 @@
+.title {
+    padding-top: 3%;
+    padding-left: 5%;
+    padding-bottom: 2%;
+}
+.dashboardContainer {
+    display: flex;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 5%;
+  }
+  
+.leftPanel {
+    flex: 1;
+    margin-right: 20px;
+}
+  
+.middlePanel {
+    flex: 1;
+    margin-right: 20px;
+}
+  
+.rightPanel {
+    flex: 1;
+}
+  
+.checklist {
+   padding-bottom: 3%;
+}
+  
+.leaderboard {
+   padding-top: 3%;
+}

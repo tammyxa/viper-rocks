@@ -1,9 +1,33 @@
+"use client"
+
 import Link from "next/link";
-import { getServerSession } from "next-auth";
+import { getServerSession, Session } from "next-auth";
+import { useState, useEffect } from "react";
 import { options } from "../../api/auth/[...nextauth]/options";
 
-export const Nav = async () => {
-  const session = await getServerSession(options);
+
+
+export const Nav = () => {
+  
+  // const session = await getServerSession();
+
+  const [session, setSession] = useState<Session | null>(null);
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      try {
+        const sessionData = await getServerSession();
+        setSession(sessionData);
+      } catch (error) {
+        console.error('Error fetching session:', error);
+        setSession(null);
+      }
+    };
+
+    fetchSession();
+  }, []);
+  
+
   return (
     <>
       <header id="HeaderInternal" className="sticky top-0 z-30">
@@ -72,7 +96,7 @@ export const Nav = async () => {
 
                   <div className="flex">
                   <Link
-                    href="/pages/CreateUser"
+                    href="/CreateUser"
                     className="flex flex-nowrap items-center focus:outline-none focus:ring-2 mr-2 py-1"
                   >
                     <span className="hidden lg:block mr-2">Join</span>
@@ -177,7 +201,7 @@ export const Nav = async () => {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/pages/AboutUs" className="block">
+                    <Link href="/AboutUs" className="block">
                       <span
                         className="inline-block text-gray-mid"
                         data-text="About Us"
@@ -187,24 +211,44 @@ export const Nav = async () => {
                     </Link>
                   </li>
                   <li>
-                    <a href="/pages/FAQ" className="block">
+                    <Link href="/FAQ" className="block">
                       <span
                         className="inline-block text-gray-mid"
                         data-text="Questions"
                       >
                         Questions
                       </span>
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/pages/ContactUs" className="block">
+                    <Link href="/ContactUs" className="block">
                       <span
                         className="inline-block text-gray-mid"
                         data-text="Contact Us"
                       >
                         Contact
                       </span>
-                    </a>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/Explore" className="block">
+                      <span
+                        className="inline-block text-gray-mid"
+                        data-text="Konva"
+                      >
+                        ExploreTest
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/Tasks/Konva" className="block">
+                      <span
+                        className="inline-block text-gray-mid"
+                        data-text="Konva"
+                      >
+                        Fun!
+                      </span>
+                    </Link>
                   </li>
                 </ul>
               </div>

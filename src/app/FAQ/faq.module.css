@@ -1,0 +1,11 @@
+.questionspagecontainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 5%;
+  }
+  
+  .faqitem {
+    margin-top: 5%;
+    margin-bottom: 5%; /* Add space between each FAQ item */
+  }
+  

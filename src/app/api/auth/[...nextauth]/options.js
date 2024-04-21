@@ -17,7 +17,8 @@ import DiscordProvider from "next-auth/providers/discord";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "../../../lib/prisma";
 import bcrypt from "bcrypt";
-import { handleOAuthLogin } from "../../users/OAuthLogin/route";
+import { handleOAuthLogin } from "./authHandler"
+// import { handleOAuthLogin } from "../../users/OAuthLogin/route";
 
 export const options = {
   providers: [
@@ -100,7 +101,7 @@ export const options = {
     DiscordProvider({
       profile(profile, account) {
         // updates the account object to include the provider and role
-        // sending both account and profile to the handleOAuthLogin function is redundant, but it works like this. can be optimized later        
+        // sending both account and profile to the handleOAuthLogin function is redundant, but it works like this. can be optimized later
         account.provider = "Discord";
         account.role = "Discord User";
         profile.account = account;
@@ -152,7 +153,12 @@ export const options = {
               delete foundUser.password; // remove the password from the user object for security
 
               foundUser["role"] = "Unverified Email";
-              return foundUser;
+              return {
+                id: foundUser.id,  // Ensure you return the database user ID
+                name: foundUser.username,  // And any other fields you need
+                email: foundUser.email,
+                // Include additional user fields as necessary
+              };
             }
           }
         } catch (error) {
@@ -165,22 +171,43 @@ export const options = {
 
   // ensures that the token.role property is synchronized with the user.role property and vice versa, allowing for consistent role-based access control throughout the application.
   callbacks: {
-    // sets the role property of the token to the user's role
-    async jwt({ token, user }) {
-      if (user) token.role = user.role;
+    // This callback is triggered during the sign-in process or when the JWT token is refreshed.
+    async jwt({ token, user, profile, account }) {
+    // Check if the sign-in process is ongoing by verifying if `user` is defined.
+      if (user) {
+        console.log(user);
+         // This condition checks if the login is OAuth-based since `account` is defined for OAuth providers.
+        if (account) {
+          token.loginType = account.provider; // e.g., "google", "github"
+           // Fetch or create the user in the database based on the OAuth profile and store the result in `userFromDb`.
+          const userFromDb = await handleOAuthLogin(profile, account);
+          console.log(userFromDb);
+           // Check if the database user operation was successful and has an ID.
+          if (userFromDb && userFromDb.id) {
+            token.userId = userFromDb.id; // Store the user's database ID in the token
+            token.name = userFromDb.name; // Optionally store the user's name if needed
+        } else {
+           // This is a Credential-based login
+           token.userId = user.id;   // For Credential logins, directly use the `user` object's ID.
+           token.name = user.name;  // Directly use the `user` object's name.
+           token.loginType = "credentials"; // Indicate that this is a Credential-based login.
+          }
+          
+      
+        }
+        }
+      
       return token;
     },
-    // sets the user's role to the role property of the token
     async session({ session, token }) {
-      if (session?.user) {
-        session.user.role = token.role;
-        // upsert the session with the user's role
-        
+      if (!session.user.id && token.userId) {
+        session.user.id = token.userId; // Set the user ID in the session
+        session.user.name = token.name; // Set the user's name in the session, if stored in the token
+        session.user.loginType = token.loginType;
       }
       return session;
     },
   },
-
   session: {
     strategy: "jwt",
   },

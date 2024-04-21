@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -17,6 +17,7 @@ model User {
   password      String
   email         String      @unique
   role          String?      
+  reliabilityScore  Int @default(50)
   emailVerified DateTime?
   profilePicture         String?
   firstName    String?
@@ -28,6 +29,7 @@ model User {
   createdAt    DateTime    @default(now())
   updatedAt     DateTime?    @updatedAt
   accounts      Account[]
+  userMarks         UserMark[] 
   
   // sessions      Session[]
 }
@@ -44,6 +46,54 @@ model Account {
   
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
+
+
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  cameraId  Int      // many to one relationship with camera table (not implemented yet)
+  imageURL  String
+  scouted  Boolean  @default(false)
+  rockCount Int?
+  captureDate DateTime
+  captureTime DateTime
+  roverLocation String
+  resolution String
+  pixelDensity String  //switch to user marks
+  rockQuadrants RockQuadrant[]
+
+
+}
+
+model RockQuadrant {
+  id        Int      @id @default(autoincrement())
+  imageId   Int 
+  quadrantNumber Int
+  x         Int
+  y         Int
+  width     Int
+  height    Int
+
+  image Image @relation(fields: [imageId], references: [id])
+}
+
+model UserMark {
+  id        Int    @id @default(autoincrement())
+  userId    Int
+  imageId   Int
+  quadrantId Int?
+  rockCount Int?
+
+   user      User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+
+ @@unique([userId, imageId], name: "userId_imageId_unique")
+
+  
+}
+
+
 
 
 //model Session {
