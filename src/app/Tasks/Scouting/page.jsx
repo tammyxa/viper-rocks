@@ -15,12 +15,18 @@ const ScoutingPage = () => {
 
    // Retrieve the currentIndex from localStorage or default to 0 if not found
    const [currentIndex, setCurrentIndex] = useState(() => {
-    const savedIndex = localStorage.getItem('lastViewedImage');
-    return savedIndex ? parseInt(savedIndex, 10) : 0;
+    if (typeof window !== 'undefined'){
+      const savedIndex = localStorage.getItem('lastViewedImage');
+      return savedIndex ? parseInt(savedIndex, 10) : 0;
+    } else {
+      return 0;
+    }
   });
 
   useEffect(() => {
-    localStorage.setItem('lastViewedImage', currentIndex.toString());
+    if (typeof window !== 'undefined'){
+      localStorage.setItem('lastViewedImage', currentIndex.toString());
+    }
   }, [currentIndex]);
 
 

@@ -8,21 +8,24 @@ const DisplayQuadrant = dynamic(() => import('../../(components)/Sizing/DisplayQ
   ssr: false,
 });
 
-
-
-
 const SizingPage = () => {
   // State hook for storing the array of quadrants fetched from the API
   const [quadrants, setQuadrants] = useState([]);
 
   // Retrieve the currentIndex from localStorage or default to 0 if not found
    const [currentIndex, setCurrentIndex] = useState(() => {
-    const savedIndex = localStorage.getItem('lastViewedQuadrant');
-    return savedIndex ? parseInt(savedIndex, 10) : 0;
+    if (typeof window !== 'undefined'){
+      const savedIndex = localStorage.getItem('lastViewedQuadrant');
+      return savedIndex ? parseInt(savedIndex, 10) : 0;
+    } else {
+      return 0;
+    }
   });
 
   useEffect(() => {
-    localStorage.setItem('lastViewedQuadrant', currentIndex.toString());
+    if (typeof window !== 'undefined'){
+      localStorage.setItem('lastViewedQuadrant', currentIndex.toString());
+    }
   }, [currentIndex]);
 
 
