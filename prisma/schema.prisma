@@ -39,9 +39,23 @@ model Account {
   scope        String?
   token_type   String?
   user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String    @id @default(uuid())
+  userId       Int
+  createdAt    DateTime? @default(now())
+  updatedAt    DateTime? @updatedAt
+  provider     String
+  access_token String?
+  scope        String?
+  token_type   String?
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Image {
+  id            Int            @id @default(autoincrement())
+  cameraId      Int
+  imageURL      String
+  captureDate   DateTime
+  captureTime   DateTime
   id            Int            @id @default(autoincrement())
   cameraId      Int
   imageURL      String
@@ -53,7 +67,13 @@ model Image {
   rockCount     Int?
   scouted       Boolean        @default(false)
   numQuadrants  Int?
+  resolution    String
+  pixelDensity  String
+  rockCount     Int?
+  scouted       Boolean        @default(false)
+  numQuadrants  Int?
   rockQuadrants RockQuadrant[]
+  UserGeometry  UserGeometry[]
   UserGeometry  UserGeometry[]
 }
 
@@ -64,7 +84,14 @@ model RockQuadrant {
   y              Int
   width          Int
   height         Int
+  id             Int   @id @default(autoincrement())
+  imageId        Int
+  x              Int
+  y              Int
+  width          Int
+  height         Int
   quadrantNumber Int
+  image          Image @relation(fields: [imageId], references: [id])
   image          Image @relation(fields: [imageId], references: [id])
 }
 
@@ -72,7 +99,12 @@ model UserMark {
   id         Int  @id @default(autoincrement())
   userId     Int
   imageId    Int
+  id         Int  @id @default(autoincrement())
+  userId     Int
+  imageId    Int
   quadrantId Int?
+  rockCount  Int?
+  user       User @relation(fields: [userId], references: [id], onDelete: Cascade)
   rockCount  Int?
   user       User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

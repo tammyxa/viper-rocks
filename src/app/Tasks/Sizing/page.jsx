@@ -9,9 +9,7 @@ const DisplayQuadrant = dynamic(() => import('../../(components)/Sizing/DisplayQ
 
 const SizingPage = () => {
   const [quadrants, setQuadrants] = useState([]);
-
-  // Retrieve the currentIndex from localStorage or default to 0 if not found
-   const [currentIndex, setCurrentIndex] = useState(() => {
+  const [currentIndex, setCurrentIndex] = useState(() => {
     if (typeof window !== 'undefined'){
       const savedIndex = localStorage.getItem('lastViewedQuadrant');
       return savedIndex ? parseInt(savedIndex, 10) : 0;
@@ -19,6 +17,7 @@ const SizingPage = () => {
       return 0;
     }
   });
+  const [labels, setLabels] = useState([]);
   const [labels, setLabels] = useState([]);
 
   useEffect(() => {
@@ -32,10 +31,37 @@ const SizingPage = () => {
       const response = await fetch("/api/sizing/rockquadrants");
       const data = await response.json();
       setQuadrants(data);
+      const response = await fetch("/api/sizing/rockquadrants");
+      const data = await response.json();
+      setQuadrants(data);
     };
     fetchQuadrants();
   }, []);
 
+  const handleSubmit = async () => {
+    const geoData = labels.map(label => ({
+      type: 'Polygon',
+      coordinates: [label.map(point => [point.x, point.y])]
+    }));
+    console.log('Submitting...', geoData, quadrants[currentIndex]);
+    const response = await fetch('/api/sizing/geometry', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        geometries: geoData,
+        quadrant: quadrants[currentIndex],
+      })
+    });
+    if (response.ok) {
+      console.log('Submission successful');
+      setLabels([]);  // Clear labels on successful submission
+      handleNextQuadrant();
+    } else {
+      console.error('Submission failed');
+    }
+  };
   const handleSubmit = async () => {
     const geoData = labels.map(label => ({
       type: 'Polygon',

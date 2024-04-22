@@ -3,12 +3,15 @@ import { Stage, Layer, Image, Line } from 'react-konva';
 import useImage from 'use-image';
 import handleSubmit from '@/app/Tasks/Sizing/page';
 
-const DisplayQuadrant = ({ quadrant, labels, setLabels }) => {
+const DisplayQuadrant = ({ quadrant, labels, setLabels, labels, setLabels }) => {
   const [konvaImage] = useImage(quadrant.image.imageURL);
+  const [history, setHistory] = useState([]);
+  const [future, setFuture] = useState([]);
   const [history, setHistory] = useState([]);
   const [future, setFuture] = useState([]);
   const [drawing, setDrawing] = useState(false);
   const [points, setPoints] = useState([]);
+  const [dimensions, setDimensions] = useState({ width: quadrant.width, height: quadrant.height });
   const [dimensions, setDimensions] = useState({ width: quadrant.width, height: quadrant.height });
 
   useEffect(() => {
@@ -26,12 +29,14 @@ const DisplayQuadrant = ({ quadrant, labels, setLabels }) => {
     const { x, y } = stage.getPointerPosition();
     setDrawing(true);
     setPoints([...points, { x: x / dimensions.width * quadrant.width, y: y / dimensions.height * quadrant.height }]);
+    setPoints([...points, { x: x / dimensions.width * quadrant.width, y: y / dimensions.height * quadrant.height }]);
   };
 
   const handleMouseMove = (e) => {
     if (!drawing) return;
     const stage = e.target.getStage();
     const { x, y } = stage.getPointerPosition();
+    setPoints([...points, { x: x / dimensions.width * quadrant.width, y: y / dimensions.height * quadrant.height }]);
     setPoints([...points, { x: x / dimensions.width * quadrant.width, y: y / dimensions.height * quadrant.height }]);
   };
 
@@ -47,10 +52,38 @@ const DisplayQuadrant = ({ quadrant, labels, setLabels }) => {
       }
     }
 
+
+    // Ensure the polygon is closed by checking if the first and last points are the same
+    if (points.length > 0) {
+      const firstPoint = points[0];
+      const lastPoint = points[points.length - 1];
+      if (Math.round(lastPoint.x) !== Math.round(firstPoint.x) || Math.round(lastPoint.y) !== Math.round(firstPoint.y)) {
+        points.push({ x: firstPoint.x, y: firstPoint.y });
+      }
+    }
+
     setLabels([...labels, points]);
     setHistory([...history, labels]);
     setFuture([]);
+    setHistory([...history, labels]);
+    setFuture([]);
     setPoints([]);
+  };
+
+  const undo = () => {
+    if (history.length > 0) {
+      const previous = history.pop();
+      setFuture([labels, ...future]);
+      setLabels(previous);
+    }
+  };
+
+  const redo = () => {
+    if (future.length > 0) {
+      const next = future.shift();
+      setHistory([...history, labels]);
+      setLabels(next);
+    }
   };
 
   const undo = () => {
@@ -94,14 +127,17 @@ const DisplayQuadrant = ({ quadrant, labels, setLabels }) => {
             <Line
               key={i}
               points={label.flatMap(p => [p.x / quadrant.width * dimensions.width, p.y / quadrant.height * dimensions.height])}
+              points={label.flatMap(p => [p.x / quadrant.width * dimensions.width, p.y / quadrant.height * dimensions.height])}
               stroke="red"
               strokeWidth={2}
               closed={true}
+              fill="rgba(255, 0, 0, 0.5)"
               fill="rgba(255, 0, 0, 0.5)"
             />
           ))}
           {drawing && (
             <Line
+              points={points.flatMap(p => [p.x / quadrant.width * dimensions.width, p.y / quadrant.height * dimensions.height])}
               points={points.flatMap(p => [p.x / quadrant.width * dimensions.width, p.y / quadrant.height * dimensions.height])}
               stroke="red"
               strokeWidth={2}
