@@ -7,10 +7,6 @@ const DisplayImage = dynamic(() => import('../../(components)/Scouting/DisplayIm
   ssr: false,
 });
 
-const DisplayImage = dynamic(() => import('../../(components)/Scouting/DisplayImage'), {
-  ssr: false,
-});
-
 const ScoutingPage = () => {
   const [images, setImages] = useState([]);
 

@@ -9,6 +9,8 @@ const DisplayQuadrant = dynamic(() => import('../../(components)/Sizing/DisplayQ
 
 const SizingPage = () => {
   const [quadrants, setQuadrants] = useState([]);
+  
+  // Retrieve the currentIndex from localStorage or default to 0 if not found
   const [currentIndex, setCurrentIndex] = useState(() => {
     if (typeof window !== 'undefined'){
       const savedIndex = localStorage.getItem('lastViewedQuadrant');
@@ -18,19 +20,15 @@ const SizingPage = () => {
     }
   });
   const [labels, setLabels] = useState([]);
-  const [labels, setLabels] = useState([]);
 
   useEffect(() => {
     if (typeof window !== 'undefined'){
       localStorage.setItem('lastViewedQuadrant', currentIndex.toString());
     }
   }, [currentIndex]);
-
+  
   useEffect(() => {
     const fetchQuadrants = async () => {
-      const response = await fetch("/api/sizing/rockquadrants");
-      const data = await response.json();
-      setQuadrants(data);
       const response = await fetch("/api/sizing/rockquadrants");
       const data = await response.json();
       setQuadrants(data);
@@ -38,30 +36,6 @@ const SizingPage = () => {
     fetchQuadrants();
   }, []);
 
-  const handleSubmit = async () => {
-    const geoData = labels.map(label => ({
-      type: 'Polygon',
-      coordinates: [label.map(point => [point.x, point.y])]
-    }));
-    console.log('Submitting...', geoData, quadrants[currentIndex]);
-    const response = await fetch('/api/sizing/geometry', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        geometries: geoData,
-        quadrant: quadrants[currentIndex],
-      })
-    });
-    if (response.ok) {
-      console.log('Submission successful');
-      setLabels([]);  // Clear labels on successful submission
-      handleNextQuadrant();
-    } else {
-      console.error('Submission failed');
-    }
-  };
   const handleSubmit = async () => {
     const geoData = labels.map(label => ({
       type: 'Polygon',
@@ -105,7 +79,7 @@ const SizingPage = () => {
         )}
       </div>
       
-    {/*<button onClick={handleSubmit}>Submit</button>*/}
+      <button style={{ margin: '10px', padding: '10px', borderRadius: '10px', background: '#007bff', color: '#fff', cursor: 'pointer', border: 'none', textDecoration: 'none', width: '120px' }} onClick={handleSubmit}>Submit</button>
     </>
   );
   
