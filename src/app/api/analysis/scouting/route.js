@@ -77,35 +77,39 @@ export async function POST(req) {
     // Update the Images rockcount's with the accepted values
     await Promise.all(
       acceptedValues.map(async ({ imageId, acceptedValue }) => {
+         // Determine the number of quadrants and the width and height of each quadrant based on the accepted value
+         let numQuadrants, w, h;
+
+         if (acceptedValue <= 100) {
+           w = 500; // width of each quadrant
+           h = 333; // height of each quadrant
+           numQuadrants = 9;
+         } else if (acceptedValue < 200) {
+           w = 375;
+           h = 250;
+           numQuadrants = 16;
+         } else if (acceptedValue < 300) {
+           w = 300;
+           h = 200;
+           numQuadrants = 25;
+         } else {
+           w = 250;
+           h = 166;
+           numQuadrants = 36;
+         }
+
+         console.log("Image ID:", imageId, "Accepted Value:", acceptedValue, "Num Quadrants:", numQuadrants, "Width:", w, "Height:", h);
         // Update the Image with the accepted value and set it as scouted
         const updatedImage = await prisma.Image.update({
           where: { id: imageId },
           data: {
             rockCount: acceptedValue,
             scouted: true,
+            numQuadrants: numQuadrants,
           },
         });
 
-        // Determine the number of quadrants and the width and height of each quadrant based on the accepted value
-        let numQuadrants, w, h;
-
-        if (acceptedValue <= 100) {
-          w = 500; // width of each quadrant
-          h = 333; // height of each quadrant
-          numQuadrants = 9;
-        } else if (acceptedValue < 200) {
-          w = 375;
-          h = 250;
-          numQuadrants = 16;
-        } else if (acceptedValue < 300) {
-          w = 300;
-          h = 200;
-          numQuadrants = 25;
-        } else {
-          w = 250;
-          h = 166;
-          numQuadrants = 36;
-        }
+       
         // Calculate the number of quadrants in each row and column
         const quadrantSize = Math.sqrt(numQuadrants); // Assuming a square grid for simplicity
         let quadNumber = 1;
@@ -119,8 +123,8 @@ export async function POST(req) {
               data: {
                 imageId: imageId,
                 quadrantNumber: quadNumber++,
-                x: j * w, // Placeholder for actual calculation
-                y: i * h, // Placeholder for actual calculation
+                x: j * w, 
+                y: i * h, 
                 width: w,
                 height: h,
               },

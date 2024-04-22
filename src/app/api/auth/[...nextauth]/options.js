@@ -23,7 +23,7 @@ import { handleOAuthLogin } from "./authHandler"
 export const options = {
   providers: [
     GitHubProvider({
-      profile(profile, account) {
+      profile: async (profile, account) => {
         // updates the account object to include the provider and role
         // sending both account and profile to the handleOAuthLogin function is redundant, but it works like this. can be optimized later
         account.provider = "GitHub";
@@ -38,11 +38,12 @@ export const options = {
           userRole = "Admin";
         }
         // create or update the user and account in the database
-        handleOAuthLogin(profile, account);
+        const user = await handleOAuthLogin(profile, account);
 
         // return the profile with the role
         return {
           ...profile,
+          id: user.id,
           role: userRole,
         };
       },
@@ -53,7 +54,7 @@ export const options = {
     }),
 
     GoogleProvider({
-      profile(profile, account) {
+      profile: async (profile, account) => {
         // updates the account object to include the provider and role
         // sending both account and profile to the handleOAuthLogin function is redundant, but it works like this. can be optimized later
         account.provider = "Google";
@@ -63,10 +64,12 @@ export const options = {
         // sets the user role based on the provider
         let userRole = "Google User";
 
-        handleOAuthLogin(profile, account);
+        const user = await handleOAuthLogin(profile, account);
+
+         console.log(user);
         return {
           ...profile,
-          id: profile.sub,
+          id: user.id,
           role: userRole,
         };
       },
@@ -74,7 +77,7 @@ export const options = {
       clientSecret: process.env.GOOGLE_SECRET,
     }),
     FacebookProvider({
-      profile(profile, account) {
+      profile: async (profile, account) => {
         // updates the account object to include the provider and role
         // sending both account and profile to the handleOAuthLogin function is redundant, but it works like this. can be optimized later
         account.provider = "Facebook";
@@ -85,11 +88,12 @@ export const options = {
         let userRole = "Facebook User";
 
         // create or update the user and account in the database
-        handleOAuthLogin(profile, account);
+        const user = await handleOAuthLogin(profile, account);
 
         // return the profile with the role
         return {
           ...profile,
+          id: user.id,
           role: userRole,
         };
       },
@@ -99,7 +103,7 @@ export const options = {
     }),
 
     DiscordProvider({
-      profile(profile, account) {
+      profile: async (profile, account) => {
         // updates the account object to include the provider and role
         // sending both account and profile to the handleOAuthLogin function is redundant, but it works like this. can be optimized later
         account.provider = "Discord";
@@ -110,11 +114,12 @@ export const options = {
         let userRole = "Discord User";
 
         // create or update the user and account in the database
-        handleOAuthLogin(profile, account);
+        const user = await handleOAuthLogin(profile, account);
 
         // return the profile with the role
         return {
           ...profile,
+          id: user.id,
           role: userRole,
         };
       },
@@ -173,38 +178,37 @@ export const options = {
   callbacks: {
     // This callback is triggered during the sign-in process or when the JWT token is refreshed.
     async jwt({ token, user, profile, account }) {
+      console.log("token", token);
+      console.log("user", user);
+      console.log("profile", profile);
+      console.log("account", account);
     // Check if the sign-in process is ongoing by verifying if `user` is defined.
       if (user) {
-        console.log(user);
-         // This condition checks if the login is OAuth-based since `account` is defined for OAuth providers.
-        if (account) {
-          token.loginType = account.provider; // e.g., "google", "github"
-           // Fetch or create the user in the database based on the OAuth profile and store the result in `userFromDb`.
-          const userFromDb = await handleOAuthLogin(profile, account);
-          console.log(userFromDb);
-           // Check if the database user operation was successful and has an ID.
-          if (userFromDb && userFromDb.id) {
-            token.userId = userFromDb.id; // Store the user's database ID in the token
-            token.name = userFromDb.name; // Optionally store the user's name if needed
-        } else {
-           // This is a Credential-based login
-           token.userId = user.id;   // For Credential logins, directly use the `user` object's ID.
-           token.name = user.name;  // Directly use the `user` object's name.
-           token.loginType = "credentials"; // Indicate that this is a Credential-based login.
-          }
+      
+       
+          token.loginType = account.provider || "Credentials"; 
+           
+            token.userId = user.id; // Store the user's database ID in the token
+            token.name = user.name; // Optionally store the user's name if needed
+       
+        }
+          
           
       
-        }
-        }
+        
+        
       
       return token;
     },
     async session({ session, token }) {
+      
       if (!session.user.id && token.userId) {
         session.user.id = token.userId; // Set the user ID in the session
         session.user.name = token.name; // Set the user's name in the session, if stored in the token
         session.user.loginType = token.loginType;
+
       }
+   
       return session;
     },
   },
