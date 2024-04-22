@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Stage, Layer, Image, Line } from 'react-konva';
 import useImage from 'use-image';
+import handleSubmit from '@/app/Tasks/Sizing/page';
 
 const DisplayQuadrant = ({ quadrant, labels, setLabels }) => {
   const [konvaImage] = useImage(quadrant.image.imageURL);
@@ -13,7 +14,7 @@ const DisplayQuadrant = ({ quadrant, labels, setLabels }) => {
   useEffect(() => {
     const resizeHandler = () => {
       const scale = Math.min(window.innerWidth / quadrant.width, window.innerHeight / quadrant.height);
-      setDimensions({ width: quadrant.width * scale, height: quadrant.height * scale });
+      setDimensions({ width: quadrant.width * scale - 250, height: quadrant.height * scale - 300});
     };
     window.addEventListener('resize', resizeHandler);
     resizeHandler();
@@ -69,7 +70,7 @@ const DisplayQuadrant = ({ quadrant, labels, setLabels }) => {
   };
 
   return (
-    <>
+    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
       <Stage
         width={dimensions.width}
         height={dimensions.height}
@@ -107,10 +108,14 @@ const DisplayQuadrant = ({ quadrant, labels, setLabels }) => {
             />
           )}
         </Layer>
-      </Stage>
-      <button onClick={undo}>Undo</button>
-      <button onClick={redo}>Redo</button>
-    </>
+        </Stage>
+        <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '30px' }}>
+          <button style={{ margin: "10px", padding: "10px", borderRadius: "10px", background: "#c0c0c0", cursor: "pointer", width: '120px' }} onClick={undo}>Undo</button>
+          <button style={{ margin: "10px", padding: "10px", borderRadius: "10px", background: "#c0c0c0", cursor: "pointer", width: '120px' }} onClick={redo}>Redo</button>
+          <button style={{ margin: '10px', padding: '10px', borderRadius: '10px', background: '#007bff', color: '#fff', cursor: 'pointer', border: 'none', textDecoration: 'none', width: '120px' }} onClick={handleSubmit}>Submit</button>
+        </div>
+
+  </div>
   );
 };
 

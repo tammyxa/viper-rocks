@@ -60,7 +60,7 @@ const SizingPage = () => {
   return (
     <>
       <h1>Cropping Rock Quadrant Sample</h1>
-      <div>
+      <div style={{ margin: '20px' }}> {/* Adjust margin size as needed */}
         {quadrants.length > 0 && (
           <DisplayQuadrant
             key={`${quadrants[currentIndex].image.imageURL}-${quadrants[currentIndex].id}`}
@@ -69,11 +69,12 @@ const SizingPage = () => {
             setLabels={setLabels}
           />
         )}
-        <button onClick={handleSubmit}>Submit</button>
-        
       </div>
+      
+    {/*<button onClick={handleSubmit}>Submit</button>*/}
     </>
   );
+  
 };
 
 export default SizingPage;
