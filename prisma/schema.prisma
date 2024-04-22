@@ -80,12 +80,12 @@ model UserMark {
 }
 
 model UserGeometry {
-  id      Int                    @id @default(autoincrement())
+  id      Int                     @id @default(autoincrement())
   userId  Int
-  drawing Unsupported("raster")?
   imageId Int
-  user    User                   @relation(fields: [userId], references: [id])
-  Image   Image                  @relation(fields: [imageId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_usergeometry_image")
+  drawing Unsupported("geometry")
+  user    User                    @relation(fields: [userId], references: [id])
+  Image   Image                   @relation(fields: [imageId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_usergeometry_image")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -96,3 +96,8 @@ model spatial_ref_sys {
   srtext    String? @db.VarChar(2048)
   proj4text String? @db.VarChar(2048)
 }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+// model rasters {
+// }

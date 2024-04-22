@@ -56,49 +56,41 @@ export async function POST(req) {
     const userId = session.user.id;
     const imageId = quadrant.image.id; // Assuming each image/quadrant has an ID
 
-     // Use static dimensions for all images
-     const imageWidth = 1500;
-     const imageHeight = 1000;
- 
-
- // Debugging: log variables to check for undefined
- console.log(`userId: ${userId}, imageId: ${imageId}, imageWidth: ${imageWidth}, imageHeight: ${imageHeight}`);
+    
 
 
-    const quadrantWidth = quadrant.width;
-    const quadrantHeight = quadrant.height;
-    const n = Math.sqrt(quadrant.image.numQuadrants); // Assuming the number of quadrants is a perfect square
-    const quadrantIndex = quadrant.quadrantNumber - 1;
-    const qx = quadrantIndex % n; // Column index of the quadrant
-    const qy = Math.floor(quadrantIndex / n); // Row index of the quadrant
 
-    await prisma.$transaction(
-      geometries.map(geometry => {
-        const globalCoordinates = geometry.coordinates[0].map(p => {
-          const gx = Math.round(quadrant.x + p.x);
-          const gy = Math.round(quadrant.y + p.y);
-          return `${gx} ${gy}`;
-        }).join(", ");
 
-        const wkt = `POLYGON((${globalCoordinates}))`;
-        const rasterQuery = `
-          WITH geom AS (
-            SELECT ST_GeomFromText('${wkt}', 4326) AS geom
-          ),
-          raster AS (
-            SELECT ST_AsRaster(geom.geom, ${imageWidth}, ${imageHeight}, '8BUI', 255) AS rast
-            FROM geom
-          )
-          INSERT INTO "UserGeometry" ("userId", "imageId", "drawing")
-          SELECT ${userId}, ${imageId}, raster.rast FROM raster
-          RETURNING id;
-        `;
+     // Define quadrant and image dimensions
+     const { width: quadrantWidth, height: quadrantHeight } = quadrant;
+     const n = Math.sqrt(quadrant.image.numQuadrants);
+     const quadrantIndex = quadrant.quadrantNumber - 1;
+     const qx = quadrantIndex % n;
+     const qy = Math.floor(quadrantIndex / n);
 
-        return prisma.$executeRawUnsafe(rasterQuery);
-      })
-    );
+     // Prepare and execute database transactions
+     const queries = geometries.map(geometry => {
+      const globalCoordinates = geometry.coordinates[0].map(([x, y]) => {
+        // Adjust the y-coordinate to invert it
+        const invertedY = quadrantHeight - y;
+        const gx = Math.round(qx * quadrantWidth + x);
+        const gy = Math.round(qy * quadrantHeight + invertedY);
+        return `${gx} ${gy}`;
+      }).join(", ");
 
-    return new NextResponse(JSON.stringify({ message: 'Geometries saved successfully' }), { status: 200 });
+      const wkt = `POLYGON((${globalCoordinates}))`;
+
+      return prisma.$executeRawUnsafe(
+        `INSERT INTO "UserGeometry" ("userId", "drawing", "imageId") VALUES ($1, ST_GeomFromText($2), $3) RETURNING id;`,
+        userId,
+        wkt,
+        imageId
+      );
+    });
+
+    const results = await prisma.$transaction(queries);
+
+    return new NextResponse(JSON.stringify({ message: 'Geometries saved successfully', results }), { status: 200 });
   } catch (error) {
     console.error('Error handling POST request:', error);
     return new NextResponse(JSON.stringify({
