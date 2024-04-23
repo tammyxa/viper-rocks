@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import dynamic from 'next/dynamic';
-
+import { useSession } from "next-auth/react";
 import OptionSelector from "../../(components)/Scouting/OptionSelector";
 
 
@@ -11,6 +11,8 @@ const DisplayImage = dynamic(() => import('../../(components)/Scouting/DisplayIm
 });
 
 const ScoutingPage = () => {
+
+  
   // State hook for storing the array of images fetched from the API
   const [images, setImages] = useState([]);
 
