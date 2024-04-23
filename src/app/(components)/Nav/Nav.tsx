@@ -1,33 +1,34 @@
-"use client"
-
 import Link from "next/link";
 import { getServerSession, Session } from "next-auth";
 import { useState, useEffect } from "react";
 import { options } from "../../api/auth/[...nextauth]/options";
 
+export const Nav = async () => {
 
+  const session = await getServerSession();
 
-export const Nav = () => {
+  /*
+  The code will not work if using useEffect for some reason
+  Will need to fix this later
+  For now make Nav async -J.P 
+  */
+ 
+  // const [session, setSession] = useState<Session | null>(null);
+  // useEffect(() => {
+  //   const fetchSession = async () => {
+  //     try {
+  //       const sessionData = await getServerSession();
+  //       setSession(sessionData);
+  //     } catch (error) {
+  //       console.error('Error fetching session:', error);
+  //       setSession(null);
+  //     }
+  //   };
+  //   fetchSession();
+  // }, []);
   
-  // const session = await getServerSession();
-
-  const [session, setSession] = useState<Session | null>(null);
-
-  useEffect(() => {
-    const fetchSession = async () => {
-      try {
-        const sessionData = await getServerSession();
-        setSession(sessionData);
-      } catch (error) {
-        console.error('Error fetching session:', error);
-        setSession(null);
-      }
-    };
-
-    fetchSession();
-  }, []);
+  console.log(session);
   
-
   return (
     <>
       <header id="HeaderInternal" className="sticky top-0 z-30">
@@ -68,6 +69,7 @@ export const Nav = () => {
                 </a>
               </div>
               <div className="flex flex-nowrap -mr-2">
+                
                 {session ? (
                   <Link
                     href="/api/auth/signout?callbackUrl=/"
@@ -227,26 +229,6 @@ export const Nav = () => {
                         data-text="Contact Us"
                       >
                         Contact
-                      </span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/Explore" className="block">
-                      <span
-                        className="inline-block text-gray-mid"
-                        data-text="Konva"
-                      >
-                        ExploreTest
-                      </span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/Tasks/Konva" className="block">
-                      <span
-                        className="inline-block text-gray-mid"
-                        data-text="Konva"
-                      >
-                        Fun!
                       </span>
                     </Link>
                   </li>
