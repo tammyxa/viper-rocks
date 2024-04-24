@@ -13,6 +13,7 @@ const SizingPage = () => {
     const savedIndex = localStorage.getItem('lastViewedQuadrant');
     return savedIndex ? parseInt(savedIndex, 10) : 0;
   });
+  
   const [labels, setLabels] = useState([]);
 
   useEffect(() => {

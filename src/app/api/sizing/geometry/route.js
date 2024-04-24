@@ -64,17 +64,18 @@ export async function POST(req) {
      // Define quadrant and image dimensions
      const { width: quadrantWidth, height: quadrantHeight } = quadrant;
      const n = Math.sqrt(quadrant.image.numQuadrants);
+     const imageHeight = n * quadrantHeight;
      const quadrantIndex = quadrant.quadrantNumber - 1;
      const qx = quadrantIndex % n;
      const qy = Math.floor(quadrantIndex / n);
 
      // Prepare and execute database transactions
-     const queries = geometries.map(geometry => {
+    const queries = geometries.map(geometry => {
       const globalCoordinates = geometry.coordinates[0].map(([x, y]) => {
         // Adjust the y-coordinate to invert it
-        const invertedY = quadrantHeight - y;
+        //const invertedY = quadrantHeight - y;
         const gx = Math.round(qx * quadrantWidth + x);
-        const gy = Math.round(qy * quadrantHeight + invertedY);
+        const gy = imageHeight - (Math.round(qy * quadrantHeight + y));
         return `${gx} ${gy}`;
       }).join(", ");
 

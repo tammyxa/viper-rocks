@@ -81,7 +81,7 @@ const ScoutingPage = () => {
           },
           body: JSON.stringify({
             imageId: currentImageId,
-            selectedOption: parseInt(selectedOption, 10),
+            selectedOption: selectedOption,
           }),
         });
 
@@ -104,6 +104,7 @@ const ScoutingPage = () => {
   // Renders the ScoutingPage component.
   return (
     <>
+    
       <div
         style={{
           display: "flex",
@@ -117,6 +118,9 @@ const ScoutingPage = () => {
         <div style={{ flex: 1 }}>
           <OptionSelector onSubmit={handleSubmit} />
         </div>
+
+
+
 
         <button
 onClick={() => {
