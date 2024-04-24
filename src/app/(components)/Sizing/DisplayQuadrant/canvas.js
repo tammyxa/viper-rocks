@@ -4,6 +4,7 @@ import useImage from 'use-image';
 import handleSubmit from '@/app/Tasks/Sizing/page';
 
 const DisplayQuadrant = ({ quadrant, labels, setLabels }) => {
+
   const [konvaImage] = useImage(quadrant.image.imageURL);
   const [history, setHistory] = useState([]);
   const [future, setFuture] = useState([]);
@@ -69,6 +70,7 @@ const DisplayQuadrant = ({ quadrant, labels, setLabels }) => {
     }
   };
 
+
   return (
     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
       <Stage
@@ -112,7 +114,7 @@ const DisplayQuadrant = ({ quadrant, labels, setLabels }) => {
         <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '30px' }}>
           <button style={{ margin: "10px", padding: "10px", borderRadius: "10px", background: "#c0c0c0", cursor: "pointer", width: '120px' }} onClick={undo}>Undo</button>
           <button style={{ margin: "10px", padding: "10px", borderRadius: "10px", background: "#c0c0c0", cursor: "pointer", width: '120px' }} onClick={redo}>Redo</button>
-          <button style={{ margin: '10px', padding: '10px', borderRadius: '10px', background: '#007bff', color: '#fff', cursor: 'pointer', border: 'none', textDecoration: 'none', width: '120px' }} onClick={handleSubmit}>Submit</button>
+          {/* <button style={{ margin: '10px', padding: '10px', borderRadius: '10px', background: '#007bff', color: '#fff', cursor: 'pointer', border: 'none', textDecoration: 'none', width: '120px' }} onClick={handleSubmit}>Submit</button> */}
         </div>
 
   </div>

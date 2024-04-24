@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import dynamic from 'next/dynamic';
 import OptionSelector from "../../(components)/Scouting/OptionSelector";
+import dynamic from 'next/dynamic';
 
 const DisplayImage = dynamic(() => import('../../(components)/Scouting/DisplayImage'), {
   ssr: false,
@@ -9,13 +9,21 @@ const DisplayImage = dynamic(() => import('../../(components)/Scouting/DisplayIm
 
 const ScoutingPage = () => {
   const [images, setImages] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(() => {
-    const savedIndex = localStorage.getItem('lastViewedImage');
-    return savedIndex ? parseInt(savedIndex, 10) : 0;
+
+   // Retrieve the currentIndex from localStorage or default to 0 if not found
+   const [currentIndex, setCurrentIndex] = useState(() => {
+    if (typeof window !== 'undefined'){
+      const savedIndex = localStorage.getItem('lastViewedImage');
+      return savedIndex ? parseInt(savedIndex, 10) : 0;
+    } else {
+      return 0;
+    }
   });
 
   useEffect(() => {
-    localStorage.setItem('lastViewedImage', currentIndex.toString());
+    if (typeof window !== 'undefined'){
+      localStorage.setItem('lastViewedImage', currentIndex.toString());
+    }
   }, [currentIndex]);
 
   useEffect(() => {

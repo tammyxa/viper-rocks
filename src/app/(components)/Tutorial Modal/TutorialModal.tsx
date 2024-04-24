@@ -1,6 +1,11 @@
 import React from "react";
 
-const TutorialModal = ({isVisible, onClose}) => {
+interface TutorialModalProps{
+    isVisible: boolean;
+    onClose: () => void;
+}
+
+const TutorialModal = ({isVisible, onClose}: TutorialModalProps) => {
     if (!isVisible) return null;
 
 

@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/Dashboard/page.jsx", "src/components/Canvas.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/Dashboard/page.jsx", "src/components/Canvas.jsx", "src/app/Test/page.jsx"],
   "exclude": ["node_modules"]
 }

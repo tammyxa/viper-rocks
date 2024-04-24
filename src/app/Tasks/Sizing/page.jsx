@@ -9,16 +9,24 @@ const DisplayQuadrant = dynamic(() => import('../../(components)/Sizing/DisplayQ
 
 const SizingPage = () => {
   const [quadrants, setQuadrants] = useState([]);
+  
+  // Retrieve the currentIndex from localStorage or default to 0 if not found
   const [currentIndex, setCurrentIndex] = useState(() => {
-    const savedIndex = localStorage.getItem('lastViewedQuadrant');
-    return savedIndex ? parseInt(savedIndex, 10) : 0;
+    if (typeof window !== 'undefined'){
+      const savedIndex = localStorage.getItem('lastViewedQuadrant');
+      return savedIndex ? parseInt(savedIndex, 10) : 0;
+    } else {
+      return 0;
+    }
   });
   const [labels, setLabels] = useState([]);
 
   useEffect(() => {
-    localStorage.setItem('lastViewedQuadrant', currentIndex.toString());
+    if (typeof window !== 'undefined'){
+      localStorage.setItem('lastViewedQuadrant', currentIndex.toString());
+    }
   }, [currentIndex]);
-
+  
   useEffect(() => {
     const fetchQuadrants = async () => {
       const response = await fetch("/api/sizing/rockquadrants");
@@ -71,7 +79,7 @@ const SizingPage = () => {
         )}
       </div>
       
-    {/*<button onClick={handleSubmit}>Submit</button>*/}
+      <button style={{ margin: '10px', padding: '10px', borderRadius: '10px', background: '#007bff', color: '#fff', cursor: 'pointer', border: 'none', textDecoration: 'none', width: '120px' }} onClick={handleSubmit}>Submit</button>
     </>
   );
   
