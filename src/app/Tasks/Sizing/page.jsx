@@ -19,6 +19,7 @@ const SizingPage = () => {
       return 0;
     }
   });
+  
   const [labels, setLabels] = useState([]);
 
   useEffect(() => {

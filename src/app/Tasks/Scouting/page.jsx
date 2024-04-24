@@ -2,12 +2,16 @@
 import React, { useEffect, useState } from "react";
 import OptionSelector from "../../(components)/Scouting/OptionSelector";
 import dynamic from 'next/dynamic';
+import { useSession } from "next-auth/react";
+
 
 const DisplayImage = dynamic(() => import('../../(components)/Scouting/DisplayImage'), {
   ssr: false,
 });
 
 const ScoutingPage = () => {
+
+  // State hook for storing the array of images fetched from the API
   const [images, setImages] = useState([]);
 
    // Retrieve the currentIndex from localStorage or default to 0 if not found
@@ -66,7 +70,7 @@ const ScoutingPage = () => {
           },
           body: JSON.stringify({
             imageId: currentImageId,
-            selectedOption: parseInt(selectedOption, 10),
+            selectedOption: selectedOption,
           }),
         });
 
