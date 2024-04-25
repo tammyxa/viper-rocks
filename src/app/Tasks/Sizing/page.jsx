@@ -15,6 +15,7 @@ const SizingPage = () => {
   });
   
   const [labels, setLabels] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Combined loading state
 
   useEffect(() => {
     localStorage.setItem('lastViewedQuadrant', currentIndex.toString());
@@ -22,14 +23,17 @@ const SizingPage = () => {
 
   useEffect(() => {
     const fetchQuadrants = async () => {
+      setIsLoading(true); // Set loading state to true
       const response = await fetch("/api/sizing/rockquadrants");
       const data = await response.json();
       setQuadrants(data);
+      setIsLoading(false); // Set loading state to false after data is fetched
     };
     fetchQuadrants();
   }, []);
 
   const handleSubmit = async () => {
+    setIsLoading(true); // Set loading state to true
     const geoData = labels.map(label => ({
       type: 'Polygon',
       coordinates: [label.map(point => [point.x, point.y])]
@@ -52,6 +56,7 @@ const SizingPage = () => {
     } else {
       console.error('Submission failed');
     }
+    setIsLoading(false); // Set loading state to false after submission
   };
 
   const handleNextQuadrant = () => {
@@ -62,16 +67,21 @@ const SizingPage = () => {
     <>
       <h1>Cropping Rock Quadrant Sample</h1>
       <div>
-        {quadrants.length > 0 && (
-          <DisplayQuadrant
-            key={`${quadrants[currentIndex].image.imageURL}-${quadrants[currentIndex].id}`}
-            quadrant={quadrants[currentIndex]}
-            labels={labels}
-            setLabels={setLabels}
-          />
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          quadrants.length > 0 && (
+            <DisplayQuadrant
+              key={`${quadrants[currentIndex].image.imageURL}-${quadrants[currentIndex].id}`}
+              quadrant={quadrants[currentIndex]}
+              labels={labels}
+              setLabels={setLabels}
+            />
+          )
         )}
-        <button onClick={handleSubmit}>Submit</button>
-        
+        {!isLoading && (
+          <button onClick={handleSubmit}>Submit</button>
+        )}
       </div>
     </>
   );
