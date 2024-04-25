@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from "react";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import dynamic from 'next/dynamic';
 
 const DisplayQuadrant = dynamic(() => import('../../(components)/Sizing/DisplayQuadrant/canvas'), {
@@ -68,7 +69,7 @@ const SizingPage = () => {
       <h1>Cropping Rock Quadrant Sample</h1>
       <div>
         {isLoading ? (
-          <div>Loading...</div>
+          <LoadingSpinner /> 
         ) : (
           quadrants.length > 0 && (
             <DisplayQuadrant
