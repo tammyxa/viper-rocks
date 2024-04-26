@@ -53,6 +53,8 @@ model Image {
   rockCount     Int?
   scouted       Boolean        @default(false)
   numQuadrants  Int?
+  ImageGeometry ImageGeometry?
+  RockCenter    RockCenter[]
   rockQuadrants RockQuadrant[]
   UserGeometry  UserGeometry[]
 }
@@ -97,7 +99,17 @@ model spatial_ref_sys {
   proj4text String? @db.VarChar(2048)
 }
 
-/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
-/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
-// model rasters {
-// }
+model ImageGeometry {
+  id      Int                     @id @default(autoincrement())
+  imageId Int                     @unique
+  rocks   Unsupported("geometry")
+  Image   Image                   @relation(fields: [imageId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_imagegeometry_image")
+}
+
+model RockCenter {
+  id             Int                     @id @default(autoincrement())
+  imageId        Int
+  classification String?                 @db.VarChar(255)
+  location       Unsupported("geometry")
+  Image          Image                   @relation(fields: [imageId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
