@@ -22,7 +22,8 @@
     "react-dom": "^18",
     "react-konva": "^18.2.10",
     "react-konva-utils": "^1.0.6",
-    "use-image": "^1.1.1"
+    "use-image": "^1.1.1",
+    "wellknown": "^0.5.0"
   },
   "devDependencies": {
     "@types/node": "20.11.24",
