@@ -1,5 +1,5 @@
 'use client';
-
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import dynamic from 'next/dynamic';
@@ -74,7 +74,11 @@ const SizingPage = () => {
 
   return (
     <>
-      <h1>Cropping Rock Quadrant Sample</h1>
+     <div style={{ paddingLeft: "25px", paddingTop:"30px", paddingBottom:"10px"}}>
+        <Link href="/Explore">Back</Link>
+      </div>
+
+      <h1 style={{ paddingLeft: "20px"}}>Cropping Rock Quadrant Sample</h1>
       <div style={{ margin: '20px' }}> {/* Adjust margin size as needed */}
         {isLoading ? (
           <LoadingSpinner /> 
