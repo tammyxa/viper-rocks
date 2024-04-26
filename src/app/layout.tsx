@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import "./dist/css/explorer-1.min.css";
 import { Nav } from "./(components)/Nav";
+import { MobileNav } from "./(components)/MobileNav";
 import { Footer } from "./(components)/Footer";
 
 
@@ -23,6 +24,7 @@ export default function RootLayout({
       <head></head>
       <body>
         <Nav />
+        <MobileNav />
         {children}
         <Footer />
         {/* <!-- JavaScript -->
