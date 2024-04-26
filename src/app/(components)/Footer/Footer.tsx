@@ -14,7 +14,8 @@ export const Footer = () => {
                     rel=""
                     className="group cursor-pointer text-jpl-sky-blue can-hover:hover:text-jpl-sky-blue-dark"
                   >
-                    <span className="break-words">Lorem Ipsum</span>
+                    <span className="break-words">Michael Gibson, Jerome Pineda, Angy Xajil, Tammy Xaypraseuth, Zainab Sulaiman, Diane Tabilas, Diana Arteaga-Andrade, Cristian Gomez, Santiago Bautista,
+                    Kevin Andrade, Nida Sheikh</span>
                   </a>
                 </div>
                 ,
@@ -27,7 +28,6 @@ export const Footer = () => {
                     rel=""
                     className="group cursor-pointer text-jpl-sky-blue can-hover:hover:text-jpl-sky-blue-dark"
                   >
-                    <span className="break-words">Dolor Sit-Amet</span>
                   </a>
                 </div>
               </li>
