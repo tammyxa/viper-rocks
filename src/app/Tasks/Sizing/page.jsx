@@ -89,11 +89,9 @@ const SizingPage = () => {
           )
         )}
         {!isLoading && (
-          <button onClick={handleSubmit}>Submit</button>
+                <button style={{ margin: '10px', padding: '10px', borderRadius: '10px', background: '#007bff', color: '#fff', cursor: 'pointer', border: 'none', textDecoration: 'none', width: '120px' }} onClick={handleSubmit}>Submit</button>
         )}
       </div>
-      
-      <button style={{ margin: '10px', padding: '10px', borderRadius: '10px', background: '#007bff', color: '#fff', cursor: 'pointer', border: 'none', textDecoration: 'none', width: '120px' }} onClick={handleSubmit}>Submit</button>
     </>
   );
   
