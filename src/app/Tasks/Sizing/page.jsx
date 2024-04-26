@@ -78,7 +78,7 @@ const SizingPage = () => {
         <Link href="/Explore">Back</Link>
       </div>
 
-      <h1 style={{ paddingLeft: "20px"}}>Cropping Rock Quadrant Sample</h1>
+      <h1 style={{ paddingLeft: "20px"}}>Sizing</h1>
       <div style={{ margin: '20px' }}> {/* Adjust margin size as needed */}
         {isLoading ? (
           <LoadingSpinner /> 
