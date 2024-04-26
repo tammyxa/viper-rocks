@@ -26,6 +26,8 @@ export const Nav = async () => {
   //   fetchSession();
   // }, []);
 
+  console.log(session);
+
   return (
     <>
       <header id="NavHeaderInternal" className="sticky top-0 z-30">
@@ -125,71 +127,6 @@ export const Nav = async () => {
               </div>
             </div>
           </div>
-          <div className="lg:hidden block relative z-30 bg-white shadow-lg py-4">
-            <a
-              className="px-4 lg:px-0 lg:container mx-auto flex flex-row items-center leading-tight tracking-wide font-medium text-gray-dark"
-              href="/"
-              title="VIPER ROCKS"
-            >
-              <span className="text-3xl"></span>
-              <span className="text-lg border-l-2 border-red-dark pl-3 ml-3">
-                VIPER ROCKS
-              </span>
-            </a>
-          </div>
-        </div>
-
-        <div id="NavInternalContainer" className="lg:block hidden">
-          <nav className="NavInternal" aria-label="Main">
-            <div className="w-full relative lg:shadow-lg z-20 bg-white">
-              <div className="lg:container mx-auto lg:flex justify-between">
-                <ul className="top-level lg:flex flex-nowrap lg:overflow-x-auto pt-6 lg:pt-0">
-                  <li className="">
-                    <Link href="/" className="block">
-                      <span className="inline-block" data-text="Home">
-                        Home
-                      </span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/AboutUs" className="block">
-                      <span
-                        className="inline-block text-gray-mid"
-                        data-text="About Us"
-                      >
-                        About Us
-                      </span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/FAQ" className="block">
-                      <span
-                        className="inline-block text-gray-mid"
-                        data-text="Questions"
-                      >
-                        Questions
-                      </span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/ContactUs" className="block">
-                      <span
-                        className="inline-block text-gray-mid"
-                        data-text="Contact Us"
-                      >
-                        Contact
-                      </span>
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </nav>
-          <div
-            id="NavBgOverlay"
-            className="fixed z-0 inset-0 hidden lg:block opacity-80 bg-black invisible-overlay"
-          ></div>
-          <div className="bg-white fixed inset-0 lg:hidden z-0"></div>
         </div>
       </header>
     </>
