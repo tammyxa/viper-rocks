@@ -39,14 +39,9 @@ const Dashboard = () => {
                             </li>
                             <li>
                                 <input type="checkbox" id="classification" name="classification" />
-                                {/* <button className="BaseButton bg-gray-500 hover:bg-red-600 text-white font-bold py-4 px-4 width:120px"> */}
                                     <Link href="#">
                                         Classify
                                     </Link>
-                                {/* </button> */}
-                                {/* <p className="text-subtitle text-gray-700">
-                                    Click to begin the classification task.
-                                </p> */}
                             </li>
                         </ul>
                 </div>
