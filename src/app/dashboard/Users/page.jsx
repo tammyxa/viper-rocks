@@ -27,26 +27,21 @@ const Dashboard = () => {
                         <ul>
                             <li>
                                 <input type="checkbox" id="scouting" name="scouting" className="margin-left: 10px"/>
-                                    <Link href="./Tasks/Scouting">
-                                        Scout
-                                    </Link>
+                                <Link href="./Tasks/Scouting">
+                                    Scout
+                                </Link>
                             </li>
                             <li>
                                 <input type="checkbox" id="sizing" name="sizing" />
-                                    <Link href="#">
-                                        Size
-                                    </Link>
+                                <Link href="#">
+                                    Size
+                                </Link>
                             </li>
                             <li>
                                 <input type="checkbox" id="classification" name="classification" />
-                                {/* <button className="BaseButton bg-gray-500 hover:bg-red-600 text-white font-bold py-4 px-4 width:120px"> */}
-                                    <Link href="#">
-                                        Classify
-                                    </Link>
-                                {/* </button> */}
-                                {/* <p className="text-subtitle text-gray-700">
-                                    Click to begin the classification task.
-                                </p> */}
+                                <Link href="#">
+                                    Classify
+                                </Link>
                             </li>
                         </ul>
                 </div>
