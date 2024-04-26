@@ -40,7 +40,7 @@ if (!session) {
 
         <div className="task">
           <button className="BaseButton bg-gray-500 hover:bg-red-600 text-white font-bold py-4 px-4">
-            <Link href="#" className="text-white">
+            <Link href="./Tasks/Classifying" className="text-white">
               Classify
             </Link>
           </button>
