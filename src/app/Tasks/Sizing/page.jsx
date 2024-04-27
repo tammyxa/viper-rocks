@@ -2,23 +2,37 @@
 
 import React, { useEffect, useState } from "react";
 import dynamic from 'next/dynamic';
+import { signIn, useSession } from "next-auth/react";
 
 const DisplayQuadrant = dynamic(() => import('../../(components)/Sizing/DisplayQuadrant/canvas'), {
   ssr: false,
 });
 
 const SizingPage = () => {
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    // Redirect if not authenticated
+    if (status === "unauthenticated") {
+      signIn('auth0', { callbackUrl: '/Tasks/Sizing' });
+    }
+  }, [status]);
+
   const [quadrants, setQuadrants] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(() => {
     const savedIndex = localStorage.getItem('lastViewedQuadrant');
     return savedIndex ? parseInt(savedIndex, 10) : 0;
   });
   
-  const [labels, setLabels] = useState([]);
+  const [labels, setLabels] = useState(() => {
+    // Initialize labels from localStorage
+    return JSON.parse(localStorage.getItem('savedLabels')) || [];
+  });
 
   useEffect(() => {
     localStorage.setItem('lastViewedQuadrant', currentIndex.toString());
-  }, [currentIndex]);
+    localStorage.setItem('savedLabels', JSON.stringify(labels)); // Save labels to localStorage
+  }, [currentIndex, labels]);
 
   useEffect(() => {
     const fetchQuadrants = async () => {
@@ -47,7 +61,8 @@ const SizingPage = () => {
     });
     if (response.ok) {
       console.log('Submission successful');
-      setLabels([]);  // Clear labels on successful submission
+      localStorage.removeItem('savedLabels'); // Clear saved labels from localStorage on submit
+      setLabels([]);
       handleNextQuadrant();
     } else {
       console.error('Submission failed');
@@ -71,7 +86,6 @@ const SizingPage = () => {
           />
         )}
         <button onClick={handleSubmit}>Submit</button>
-        
       </div>
     </>
   );

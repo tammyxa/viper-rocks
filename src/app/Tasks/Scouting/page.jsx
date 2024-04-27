@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import dynamic from 'next/dynamic';
 import { useSession } from "next-auth/react";
 import OptionSelector from "../../(components)/Scouting/OptionSelector";
+import { redirect } from 'next/navigation';
 
 
 const DisplayImage = dynamic(() => import('../../(components)/Scouting/DisplayImage'), {
@@ -11,8 +12,15 @@ const DisplayImage = dynamic(() => import('../../(components)/Scouting/DisplayIm
 });
 
 const ScoutingPage = () => {
+  const { data: session } = useSession();
 
-  
+  // if no session, redirect to api/auth/signin
+  if (!session) {
+    redirect('/api/auth/signin?callbackUrl=/Tasks/Scouting');
+  }
+
+
+
   // State hook for storing the array of images fetched from the API
   const [images, setImages] = useState([]);
 
