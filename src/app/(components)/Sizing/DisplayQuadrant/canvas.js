@@ -20,6 +20,7 @@ const DisplayQuadrant = ({ quadrant, labels, setLabels }) => {
     return () => window.removeEventListener('resize', resizeHandler);
   }, [quadrant.width, quadrant.height]);
 
+  //idk
   // Save history and future to localStorage
   useEffect(() => {
     localStorage.setItem('history', JSON.stringify(history));
