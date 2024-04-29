@@ -23,7 +23,7 @@ export async function POST(req) {
         return new NextResponse(JSON.stringify({ message: 'Not Authenticated' }), { status: 403 });
       }
 
-      console.log(session.user)
+     
 
       // Get the user ID from the session
       const userId = session.user.id
@@ -35,7 +35,7 @@ export async function POST(req) {
       const { imageId, selectedOption } = data;
 
       // Log the user ID, image ID, selected option, and request body
-      console.log(userId, imageId, selectedOption, data)
+      console.log(userId, imageId, selectedOption)
       
       // If the image ID or selected option are missing, return a 400 Bad Request response
       if (!imageId || !selectedOption) {

@@ -112,6 +112,7 @@ const DisplayQuadrant = ({ quadrant, labels, setLabels }) => {
         </Layer>
         </Stage>
         <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '30px' }}>
+          <h4>Draw a circle for all rocks in this image</h4>
           <button style={{ margin: "10px", padding: "10px", borderRadius: "10px", background: "#c0c0c0", cursor: "pointer", width: '120px' }} onClick={undo}>Undo</button>
           <button style={{ margin: "10px", padding: "10px", borderRadius: "10px", background: "#c0c0c0", cursor: "pointer", width: '120px' }} onClick={redo}>Redo</button>
           {/* <button style={{ margin: '10px', padding: '10px', borderRadius: '10px', background: '#007bff', color: '#fff', cursor: 'pointer', border: 'none', textDecoration: 'none', width: '120px' }} onClick={handleSubmit}>Submit</button> */}

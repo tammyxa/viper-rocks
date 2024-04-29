@@ -1,0 +1,29 @@
+/* LoadingSpinner.css */
+.loading-spinner {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    height: 100px;
+    /* Set the height and width as needed */
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #ccc;
+    border-radius: 50%;
+    border-top-color: darkred;
+    /* Change color as needed */
+    animation: spin 1s linear infinite;
+    /* Apply rotation animation */
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

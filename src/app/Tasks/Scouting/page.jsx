@@ -1,19 +1,25 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import OptionSelector from "../../(components)/Scouting/OptionSelector";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
-const DisplayImage = dynamic(() => import('../../(components)/Scouting/DisplayImage'), {
-  ssr: false,
-});
+const DisplayImage = dynamic(
+  () => import("../../(components)/Scouting/DisplayImage"),
+  {
+    ssr: false,
+  }
+);
 
 const ScoutingPage = () => {
+  // State hook for storing the array of images fetched from the API
   const [images, setImages] = useState([]);
 
-   // Retrieve the currentIndex from localStorage or default to 0 if not found
-   const [currentIndex, setCurrentIndex] = useState(() => {
-    if (typeof window !== 'undefined'){
-      const savedIndex = localStorage.getItem('lastViewedImage');
+  // Retrieve the currentIndex from localStorage or default to 0 if not found
+  const [currentIndex, setCurrentIndex] = useState(() => {
+    if (typeof window !== "undefined") {
+      const savedIndex = localStorage.getItem("lastViewedImage");
       return savedIndex ? parseInt(savedIndex, 10) : 0;
     } else {
       return 0;
@@ -21,8 +27,8 @@ const ScoutingPage = () => {
   });
 
   useEffect(() => {
-    if (typeof window !== 'undefined'){
-      localStorage.setItem('lastViewedImage', currentIndex.toString());
+    if (typeof window !== "undefined") {
+      localStorage.setItem("lastViewedImage", currentIndex.toString());
     }
   }, [currentIndex]);
 
@@ -66,7 +72,7 @@ const ScoutingPage = () => {
           },
           body: JSON.stringify({
             imageId: currentImageId,
-            selectedOption: parseInt(selectedOption, 10),
+            selectedOption: selectedOption,
           }),
         });
 
@@ -83,22 +89,30 @@ const ScoutingPage = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        padding: "20px",
-        flexDirection: window.innerWidth < 600 ? "column" : "row",
-      }}
-    >
-      <div style={{ flex: 1 }}>
-        {images.length > 0 && <DisplayImage image={images[currentIndex]} />}
+    <div>
+      <div style={{ paddingLeft: "20px", paddingTop:"30px"}}>
+        <Link href="/Explore">Back</Link>
       </div>
-      <div style={{ flex: 1 }}>
-        <h4 style={{marginLeft: "10px"}}>How many rocks are in this image?</h4>
-        <br></br>
-        <p style={{marginLeft: "10px"}}>Select one of the following:</p>
-        <OptionSelector onSubmit={handleSubmit} />
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          padding: "20px",
+          flexDirection: window.innerWidth < 600 ? "column" : "row",
+        }}
+      >
+        <div style={{ flex: 1 }}>
+          {images.length > 0 && <DisplayImage image={images[currentIndex]} />}
+        </div>
+        <div style={{ flex: 1 }}>
+          <h4 style={{ marginLeft: "10px" }}>
+            How many rocks are in this image?
+          </h4>
+          <br></br>
+          <p style={{ marginLeft: "10px" }}>Select one of the following:</p>
+          <OptionSelector onSubmit={handleSubmit} />
+        </div>
       </div>
     </div>
   );
