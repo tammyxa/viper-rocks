@@ -6,8 +6,8 @@ import handleSubmit from '@/app/Tasks/Sizing/page';
 const DisplayQuadrant = ({ quadrant, labels, setLabels }) => {
 
   const [konvaImage] = useImage(quadrant.image.imageURL);
-  const [history, setHistory] = useState(() => JSON.parse(localStorage.getItem('history')) || []);
-  const [future, setFuture] = useState(() => JSON.parse(localStorage.getItem('future')) || []);
+  const [history, setHistory] = useState([]);
+  const [future, setFuture] = useState([]);
   const [drawing, setDrawing] = useState(false);
   const [points, setPoints] = useState([]);
   const [dimensions, setDimensions] = useState({ width: quadrant.width, height: quadrant.height });
@@ -21,12 +21,6 @@ const DisplayQuadrant = ({ quadrant, labels, setLabels }) => {
     resizeHandler();
     return () => window.removeEventListener('resize', resizeHandler);
   }, [quadrant.width, quadrant.height]);
-
-  // Save history and future to localStorage
-  useEffect(() => {
-    localStorage.setItem('history', JSON.stringify(history));
-    localStorage.setItem('future', JSON.stringify(future));
-  }, [history, future]);
 
   const handleMouseDown = (e) => {
     const stage = e.target.getStage();
@@ -44,18 +38,25 @@ const DisplayQuadrant = ({ quadrant, labels, setLabels }) => {
 
   const handleMouseUp = () => {
     setDrawing(false);
+
+    // Ensure the polygon is closed by checking if the first and last points are the same
     if (points.length > 0) {
-      setLabels([...labels, points]);
-      setHistory([...history, labels]);
-      setFuture([]);
-      setPoints([]);
+      const firstPoint = points[0];
+      const lastPoint = points[points.length - 1];
+      if (Math.round(lastPoint.x) !== Math.round(firstPoint.x) || Math.round(lastPoint.y) !== Math.round(firstPoint.y)) {
+        points.push({ x: firstPoint.x, y: firstPoint.y });
+      }
     }
+
+    setLabels([...labels, points]);
+    setHistory([...history, labels]);
+    setFuture([]);
+    setPoints([]);
   };
 
   const undo = () => {
     if (history.length > 0) {
-      const previous = history[history.length - 1];
-      setHistory(history.slice(0, -1));
+      const previous = history.pop();
       setFuture([labels, ...future]);
       setLabels(previous);
     }
@@ -63,8 +64,7 @@ const DisplayQuadrant = ({ quadrant, labels, setLabels }) => {
 
   const redo = () => {
     if (future.length > 0) {
-      const next = future[0];
-      setFuture(future.slice(1));
+      const next = future.shift();
       setHistory([...history, labels]);
       setLabels(next);
     }
