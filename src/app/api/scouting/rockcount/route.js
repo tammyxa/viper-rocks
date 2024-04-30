@@ -26,13 +26,14 @@ export async function POST(req) {
      
 
       // Get the user ID from the session
-      const userId = session.user.id
+      const userId = parseInt(session.user.id, 10);
 
       // Parse the request body
       const data = await req.json();
 
       // Destructure the imageId and selectedOption from the request body
-      const { imageId, selectedOption } = data;
+      const imageId = parseInt(data.imageId, 10); 
+      const selectedOption = parseInt(data.selectedOption, 10); 
 
       // Log the user ID, image ID, selected option, and request body
       console.log(userId, imageId, selectedOption)
@@ -71,7 +72,7 @@ export async function POST(req) {
       // Successfully created the new user mark
       return new NextResponse(JSON.stringify({ newUserMark }), { status: 201 });
     } catch (error) {
-      console.error('Error creating new user mark:');
+      console.error('Error creating new user mark:', error.stack);
       return new NextResponse(JSON.stringify({
         message: 'Internal Server Error',
         error: error.message,
