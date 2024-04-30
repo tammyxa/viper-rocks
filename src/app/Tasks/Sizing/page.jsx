@@ -1,7 +1,7 @@
 'use client';
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import LoadingSpinner from "../../(components)/LoadingSpinner/LoadingSpinner";
 import dynamic from 'next/dynamic';
 import { signIn, useSession } from "next-auth/react";
 

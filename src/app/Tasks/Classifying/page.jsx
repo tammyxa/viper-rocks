@@ -55,29 +55,6 @@ const ClassifyingPage = () => {
   }, []);
 
   const handleSubmit = async () => {
-    // Uncomment and implement your logic for handleSubmit here
-    /*
-    if (rocks.length > 0 && currentIndex < rocks.length) {
-      const currentImageId = rocks[currentIndex].id;
-      try {
-        const response = await fetch("/api/scouting/rockcount", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            imageId: currentImageId,
-            selectedOption: selectedOption,
-          }),
-        });
-        if (!response.ok) throw new Error("Failed to submit the option");
-        const data = await response.json();
-        // ... handle response
-      } catch (error) {
-        console.error("There was a problem with the fetch operation:", error);
-      }
-    }
-    */
     setCurrentIndex((prevIndex) => (prevIndex + 1) % rocks.length);
   };
 
