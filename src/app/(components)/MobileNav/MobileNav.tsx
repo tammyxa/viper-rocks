@@ -79,6 +79,20 @@ export const MobileNav = () => {
                       </span>
                     </Link>{" "}
                   </li>
+                  <li>
+                    <Link
+                      href="/Explore"
+                      className="block"
+                      onClick={closeMenu}
+                    >
+                      <span
+                        className="inline-block text-gray-mid"
+                        data-text="Contact Us"
+                      >
+                        Dashboard
+                      </span>
+                    </Link>{" "}
+                  </li>
                 </ul>
               </div>
             </div>

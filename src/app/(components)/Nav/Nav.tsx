@@ -127,6 +127,18 @@ export const Nav = async () => {
               </div>
             </div>
           </div>
+          <div className="lg:hidden block relative z-30 bg-white shadow-lg py-4">
+            <a
+              className="px-4 lg:px-0 lg:container mx-auto flex flex-row items-center leading-tight tracking-wide font-medium text-gray-dark"
+              href="/"
+              title="VIPER ROCKS"
+            >
+              <span className="text-3xl"></span>
+              <span className="text-lg border-l-2 border-red-dark pl-3 ml-3">
+                VIPER ROCKS
+              </span>
+            </a>
+          </div>
         </div>
       </header>
     </>
