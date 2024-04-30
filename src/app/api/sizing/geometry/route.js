@@ -51,52 +51,46 @@ export async function POST(req) {
 
 
 
-      const data = await req.json();
-    const { geometries, quadrant } = data;
-    const userId = session.user.id;
-    const imageId = quadrant.image.id; // Assuming each image/quadrant has an ID
+      const { geometries, quadrant } = await req.json();
+      const userId = session.user.id;
+      const imageId = quadrant.image.id;
+      const results = await saveGeometries(geometries, userId, imageId, quadrant);
 
-    
+      return new NextResponse(JSON.stringify({ message: 'Geometries stored successfully', results }), { status: 200 });
+  } catch (error) {
+      console.error('Error handling POST request:', error);
+      return new NextResponse(JSON.stringify({ message: 'Internal Server Error' }), { status: 500 });
+  }
+}
 
+async function saveGeometries(geometries, userId, imageId, quadrant) {
+  const { width, height } = quadrant;
+  const n = Math.sqrt(quadrant.image.numQuadrants);
+  const imageHeight = n * height;
+  const quadrantIndex = quadrant.quadrantNumber - 1;
+  const qx = quadrantIndex % n;
+  const qy = Math.floor(quadrantIndex / n);
 
+  const queries = geometries.map(geometry => {
+      let coordinates = geometry.coordinates[0];
+      if (coordinates[0] !== coordinates[coordinates.length - 1]) {
+          coordinates.push(coordinates[0]);
+      }
 
-
-     // Define quadrant and image dimensions
-     const { width: quadrantWidth, height: quadrantHeight } = quadrant;
-     const n = Math.sqrt(quadrant.image.numQuadrants);
-     const imageHeight = n * quadrantHeight;
-     const quadrantIndex = quadrant.quadrantNumber - 1;
-     const qx = quadrantIndex % n;
-     const qy = Math.floor(quadrantIndex / n);
-
-     // Prepare and execute database transactions
-    const queries = geometries.map(geometry => {
-      const globalCoordinates = geometry.coordinates[0].map(([x, y]) => {
-        // Adjust the y-coordinate to invert it
-        //const invertedY = quadrantHeight - y;
-        const gx = Math.round(qx * quadrantWidth + x);
-        const gy = imageHeight - (Math.round(qy * quadrantHeight + y));
-        return `${gx} ${gy}`;
+      const globalCoordinates = coordinates.map(([x, y]) => {
+          const gx = Math.round(qx * width + x);
+          const gy = imageHeight - (Math.round(qy * height + y));
+          return `${gx} ${gy}`;
       }).join(", ");
 
       const wkt = `POLYGON((${globalCoordinates}))`;
-
       return prisma.$executeRawUnsafe(
-        `INSERT INTO "UserGeometry" ("userId", "drawing", "imageId") VALUES ($1, ST_GeomFromText($2), $3) RETURNING id;`,
-        userId,
-        wkt,
-        imageId
+          `INSERT INTO "UserGeometry" ("userId", "drawing", "imageId") VALUES ($1, ST_GeomFromText($2), $3) RETURNING id;`,
+          userId,
+          wkt,
+          imageId
       );
-    });
+  });
 
-    const results = await prisma.$transaction(queries);
-
-    return new NextResponse(JSON.stringify({ message: 'Geometries saved successfully', results }), { status: 200 });
-  } catch (error) {
-    console.error('Error handling POST request:', error);
-    return new NextResponse(JSON.stringify({
-      message: 'Internal Server Error',
-      error: error.message
-    }), { status: 500 });
-  }
+  return prisma.$transaction(queries);
 }

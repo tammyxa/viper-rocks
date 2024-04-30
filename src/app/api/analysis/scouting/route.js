@@ -5,7 +5,7 @@ import { NextResponse } from "next/server"; // Import NextResponse
 // Named export for GET request
 export async function GET(req, res) {
   try {
-    const minUserMarks = 3;
+    const minUserMarks = 2;
 
     // Step 1: Fetch images that have not been scouted yet
     const images = await prisma.Image.findMany({
