@@ -87,6 +87,12 @@ export const options = {
         // sets the user role based on the provider
         let userRole = "Facebook User";
 
+         // if the user is me, set the role to Admin
+         if (profile?.email == "michaelgibson1029@gmail.com") {
+          // change this to your email to test role functionality
+          userRole = "Admin";
+        }
+
         // create or update the user and account in the database
         const user = await handleOAuthLogin(profile, account);
 
@@ -190,6 +196,7 @@ export const options = {
            
             token.userId = user.id; // Store the user's database ID in the token
             token.name = user.name; // Optionally store the user's name if needed
+            token.role = user.role; // Store the user's role in the token
        
         }
           
@@ -206,6 +213,7 @@ export const options = {
         session.user.id = token.userId; // Set the user ID in the session
         session.user.name = token.name; // Set the user's name in the session, if stored in the token
         session.user.loginType = token.loginType;
+        session.user.role = token.role; // Set the user's role in the session
 
       }
    
