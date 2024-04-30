@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession, signIn } from "next-auth/react";
 import dynamic from 'next/dynamic';
-import LoadingSpinner from "../LoadingSpinner/LoadingSpinner"; // Adjust path as necessary
+import LoadingSpinner from "../../(components)/LoadingSpinner/LoadingSpinner"; // Adjust path as necessary
 
 const DisplayQuadrant = dynamic(() => import('../../(components)/Sizing/DisplayQuadrant/canvas'), { ssr: false });
 
