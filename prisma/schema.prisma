@@ -53,8 +53,12 @@ model Image {
   rockCount     Int?
   scouted       Boolean        @default(false)
   numQuadrants  Int?
+  sized         Boolean?       @default(false)
+  ImageGeometry ImageGeometry?
+  RockCenter    RockCenter[]
   rockQuadrants RockQuadrant[]
   UserGeometry  UserGeometry[]
+  UserMark      UserMark[]
 }
 
 model RockQuadrant {
@@ -65,16 +69,17 @@ model RockQuadrant {
   width          Int
   height         Int
   quadrantNumber Int
-  image          Image @relation(fields: [imageId], references: [id])
+  image          Image @relation(fields: [imageId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model UserMark {
-  id         Int  @id @default(autoincrement())
+  id         Int   @id @default(autoincrement())
   userId     Int
   imageId    Int
   quadrantId Int?
   rockCount  Int?
-  user       User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Image      Image @relation(fields: [imageId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user       User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, imageId], name: "userId_imageId_unique")
 }
@@ -84,8 +89,8 @@ model UserGeometry {
   userId  Int
   imageId Int
   drawing Unsupported("geometry")
+  Image   Image                   @relation(fields: [imageId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_usergeometry_image")
   user    User                    @relation(fields: [userId], references: [id])
-  Image   Image                   @relation(fields: [imageId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_usergeometry_image")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -97,7 +102,18 @@ model spatial_ref_sys {
   proj4text String? @db.VarChar(2048)
 }
 
-/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
-/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
-// model rasters {
-// }
+model ImageGeometry {
+  id      Int                     @id @default(autoincrement())
+  imageId Int                     @unique
+  rocks   Unsupported("geometry")
+  Image   Image                   @relation(fields: [imageId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_imagegeometry_image")
+}
+
+model RockCenter {
+  id             Int                      @id @default(autoincrement())
+  imageId        Int
+  classification String?                  @db.VarChar(255)
+  location       Unsupported("geometry")
+  shape          Unsupported("geometry")?
+  Image          Image                    @relation(fields: [imageId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}

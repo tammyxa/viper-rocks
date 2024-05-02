@@ -16,13 +16,11 @@ export async function GET(req, res) {
     // Step 2 & 3: Iterate over each image to calculate the accepted value
     const scoutedImages = await Promise.all(
       images.map(async (image) => {
-        // Fetch UserMarks for the current image
         const userMarks = await prisma.UserMark.findMany({
           where: { imageId: image.id },
-          include: { user: true }, // Include user to access reliabilityScore directly
+          include: { user: true },
         });
 
-        // Step 4: Calculate the weighted average for rock counts
         if (userMarks.length >= minUserMarks) {
           let totalWeight = 0;
           let weightedSum = 0;
@@ -33,20 +31,17 @@ export async function GET(req, res) {
             totalWeight += reliability;
           });
 
-          const weightedAverage =
-            totalWeight > 0 ? weightedSum / totalWeight : 0;
+          const weightedAverage = totalWeight > 0 ? Math.round(weightedSum / totalWeight) : 0;  // Calculate weighted average and round it
 
-          return { imageId: image.id, acceptedValue: weightedAverage };
+          return { imageId: image.id, acceptedValue: weightedAverage };  // Return weighted average
         } else {
           return null;
         }
       })
     );
 
-    // Filter out any null values from images that didn't meet the UserMarks criteria
     const acceptedValues = scoutedImages.filter((value) => value !== null);
 
-    // Log and return the results
     return new NextResponse(JSON.stringify(acceptedValues), {
       status: 200,
       headers: {
@@ -75,11 +70,13 @@ export async function POST(req) {
   try {
     let updateResponses = [];
     // Update the Images rockcount's with the accepted values
+   
+
     await Promise.all(
       acceptedValues.map(async ({ imageId, acceptedValue }) => {
          // Determine the number of quadrants and the width and height of each quadrant based on the accepted value
          let numQuadrants, w, h;
-
+        
          if (acceptedValue <= 100) {
            w = 500; // width of each quadrant
            h = 333; // height of each quadrant
@@ -111,7 +108,7 @@ export async function POST(req) {
 
        
         // Calculate the number of quadrants in each row and column
-        const quadrantSize = Math.sqrt(numQuadrants); // Assuming a square grid for simplicity
+        const quadrantSize = Math.sqrt(numQuadrants); 
         let quadNumber = 1;
         let quadrants = [];
 
