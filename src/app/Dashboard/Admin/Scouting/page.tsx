@@ -1,6 +1,6 @@
 'use client';
 import styles from './dashboard.module.css';
-import TutorialModal from "../../(components)/Admin Help Modal/AdminHelp";
+import TutorialModal from "../../../(components)/Admin Help Modal/AdminHelp";
 import { Fragment, useState, useEffect } from 'react';
 import Link from "next/link";
 

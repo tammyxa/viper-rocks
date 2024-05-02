@@ -13,7 +13,7 @@ export async function GET(req) {
 
     // Execute the query to fetch rock data and their corresponding image data
     const rocks = await prisma.$queryRaw`
-    SELECT 
+    SELECT
     "RockCenter".id,
     ST_AsText("RockCenter".location) AS location,
     ST_AsText("RockCenter".shape) AS shape,
@@ -29,7 +29,7 @@ JOIN
 
 
     // Log the first rock entry to check data
-    console.log(rocks[0]);
+    // console.log(rocks[0]);
 
     // Return the fetched data with a 200 OK status
     return new NextResponse(JSON.stringify(rocks), { status: 200 });
