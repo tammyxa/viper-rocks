@@ -2,6 +2,13 @@
 import Link from "next/link";
 import { useState } from "react";
 
+function scrollToSection(sectionName: string) {
+  var targetSection = document.getElementById(sectionName);
+  if (targetSection) {
+    targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
 export const MobileNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -24,7 +31,7 @@ export const MobileNav = () => {
           style={{
             backgroundColor: "white",
             width: "100%",
-            textAlign: "left"
+            textAlign: "left",
           }}
         >
           <span style={{ fontSize: "30px" }}>{menuOpen ? "✕" : "☰"}</span>
@@ -46,7 +53,11 @@ export const MobileNav = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/AboutUs" className="block" onClick={closeMenu}>
+                    <Link
+                      href="#about-us"
+                      className="block"
+                      onClick={() => scrollToSection("about-us")}
+                    >
                       <span
                         className="inline-block text-gray-mid"
                         data-text="About Us"
@@ -56,7 +67,11 @@ export const MobileNav = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/FAQ" className="block" onClick={closeMenu}>
+                    <Link
+                      href="#faq"
+                      className="block"
+                      onClick={() => scrollToSection("questions")}
+                    >
                       <span
                         className="inline-block text-gray-mid"
                         data-text="Questions"
@@ -80,11 +95,7 @@ export const MobileNav = () => {
                     </Link>{" "}
                   </li>
                   <li>
-                    <Link
-                      href="/Explore"
-                      className="block"
-                      onClick={closeMenu}
-                    >
+                    <Link href="/Explore" className="block" onClick={closeMenu}>
                       <span
                         className="inline-block text-gray-mid"
                         data-text="Contact Us"

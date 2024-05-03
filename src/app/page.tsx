@@ -12,15 +12,16 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col">
       <div
-        id="#"
-        className="min-h-screen h-1/2 flex justify-center items-center text-center"
+        id="home"
+        className="flex justify-center items-center text-center"
+        style={{ height: "75vh" }}
       >
         <div
-          className="absolute min-h-screen min-w-full bg-cover bg-center text-center"
+          className="absolute h-full w-full bg-top bg-cover text-center"
           style={{ backgroundImage: "url(/moon-surface.webp)" }}
         ></div>
-        <div className="absolute min-h-screen min-w-full bg-center bg-cover bg-no-repeat bg-black z-1 opacity-40"></div>
-        <div className="relative text-center flex flex-col p-24">
+        <div className="absolute h-full w-full bg-center bg-cover bg-no-repeat bg-black z-1 opacity-40"></div>
+        <div className="relative text-center flex flex-col">
           <span className="text-h1-alt text-white">VIPER ROCKS</span>
           <span className="text-h3 text-white">
             Citizen Scientists Needed. Sign up to identify moon rocks for Viper
@@ -29,7 +30,8 @@ export default function Home() {
           <DarkButton href="/Explore"> Explore </DarkButton>
         </div>
       </div>
-      <div id="#about-us" className="bg-black">
+
+      <div id="about-us" className="bg-black z-10">
         <div id="our-story" className="p-12 flex">
           <div className="justify-evenly align-center flex flex-col mx-24">
             <div>
@@ -75,7 +77,7 @@ export default function Home() {
           </div>
         </div> */}
       </div>
-      <div id="questions" className="px-24 py-12">
+      <div id="faq" className="px-24 py-12">
         <span className="text-h2 text-black text-center flex justify-center">
           Frequently Asked Questions
         </span>
