@@ -26,7 +26,7 @@ export default function Home() {
           <span className="text-h1-alt text-white">VIPER ROCKS</span>
           <span className="text-h3 text-white">
             Citizen Scientists Needed. Sign up to identify moon rocks for Viper
-            rover expeditions.
+            Rover expeditions.
           </span>
           <DarkButton href="/Explore"> Explore </DarkButton>
         </div>

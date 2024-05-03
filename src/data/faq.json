@@ -10,5 +10,9 @@
   {
     "question": "Do you offer educational programs?",
     "answer": "Yes, we have various educational rpograms aimed at inspiring the next..."
+  },
+  {
+    "question": "Is this available through smaller devices?",
+    "answer": "Currently, our platform is optimized for desktop and larger devices. We are in the initial stages of development, focusing on ensuring accurate and reliable data collection and classification. We plan to expand compatibility to smaller devices in future updates as we refine our technology and capabilities."
   }
 ]
