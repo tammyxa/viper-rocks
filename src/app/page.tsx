@@ -39,8 +39,7 @@ export default function Home() {
               <span className="text-body-md flex justify-center items-center text-white">
                 At Viper Rocks, we are passionate about exploring the wonders of
                 the universe. Our mission is to bring the excitement of space
-                exploration to everyone. Our Values: Curiosity Innovation
-                Collaboration Education
+                exploration to everyone.
               </span>
             </div>
             <div>
