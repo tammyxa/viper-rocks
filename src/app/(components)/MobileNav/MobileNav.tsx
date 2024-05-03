@@ -70,7 +70,7 @@ export const MobileNav = () => {
                     <Link
                       href="#faq"
                       className="block"
-                      onClick={() => scrollToSection("questions")}
+                      onClick={() => scrollToSection("faq")}
                     >
                       <span
                         className="inline-block text-gray-mid"
@@ -82,9 +82,9 @@ export const MobileNav = () => {
                   </li>
                   <li>
                     <Link
-                      href="/ContactUs"
+                      href="#contact-us"
                       className="block"
-                      onClick={closeMenu}
+                      onClick={() => scrollToSection("contact-us")}
                     >
                       <span
                         className="inline-block text-gray-mid"
@@ -92,7 +92,7 @@ export const MobileNav = () => {
                       >
                         Contact
                       </span>
-                    </Link>{" "}
+                    </Link>
                   </li>
                   <li>
                     <Link href="/Explore" className="block" onClick={closeMenu}>

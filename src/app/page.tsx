@@ -5,6 +5,7 @@ import {
   BlockCardGroup,
   BlockTeaser,
 } from "./(components)/Blocks";
+import { ContactUsForm } from "./(components)/Forms/ContactUsForm";
 import FAQ from "@/data/faq.json";
 // import OurTeamData from "@/data/ourTeam.json";
 
@@ -83,6 +84,21 @@ export default function Home() {
         {FAQ.map((q, i) => (
           <BlockAccordion key={i} question={q.question} answer={q.answer} />
         ))}
+      </div>
+      <div id="contact-us" className="py-12 px-48">
+        <div>
+          <div className="flex justify-center flex-col mb-6">
+            <div className="text-h2">Contact Us</div>
+            <div className="text-body-sm">
+              If you have any questions or need assistance, please don&apos;t
+              hesitate to reach out. For the quickest response, fill out the
+              form below, and we&apos;ll get back to you as soon as possible. To
+              help us serve you better, we recommend using the email associated
+              with your account.
+            </div>
+          </div>
+          <ContactUsForm />
+        </div>
       </div>
     </main>
   );
