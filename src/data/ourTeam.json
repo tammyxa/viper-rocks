@@ -9,7 +9,8 @@
   },
   {
     "title": "Front End Developer",
-    "name": "Santiago Bautista"
+    "name": "Santiago Bautista",
+    "img": "/OurTeam/santiago-bautista.png"
   },
   {
     "title": "Database Developer",
@@ -39,12 +40,10 @@
   },
   {
     "title": "Front End Developer",
-    "name": "Angy Xajil",
-    "link": "https://www.linkedin.com/in/angy-xajil"
+    "name": "Angy Xajil"
   },
   {
     "title": "Front End Developer",
-    "name": "Tammy Xaypraseuth",
-    "link": "https://www.linkedin.com/in/tammyx/"
+    "name": "Tammy Xaypraseuth"
   }
 ]

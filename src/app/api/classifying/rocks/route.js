@@ -13,17 +13,20 @@ export async function GET(req) {
 
     // Execute the query to fetch rock data and their corresponding image data
     const rocks = await prisma.$queryRaw`
-SELECT 
+    SELECT 
     "RockCenter".id,
     ST_AsText("RockCenter".location) AS location,
     ST_AsText("RockCenter".shape) AS shape,
+    ST_AsText(ST_LongestLine("RockCenter".location, "RockCenter".shape)) AS longest_line,
+    ST_Length(ST_LongestLine("RockCenter".location, "RockCenter".shape)) AS distance,
     "Image".id AS imageId,
     "Image"."imageURL"
 FROM 
     "RockCenter"
 JOIN 
-    "Image" ON "RockCenter"."imageId" = "Image".id;
+    "Image" ON "RockCenter"."imageId" = "Image".id
 `;
+
 
     // Log the first rock entry to check data
     console.log(rocks[0]);

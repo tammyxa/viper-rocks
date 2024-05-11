@@ -1,0 +1,85 @@
+.title {
+    padding-top: 3%;
+    padding-left: 5%;
+    padding-bottom: 2%;
+}
+.dashboardContainer {
+    display: flex;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 5%;
+    height: 400px;
+    overflow-y: auto;
+  }
+  
+.leftPanel {
+    flex: 1;
+    margin-right: 20px;
+}
+  
+.middlePanel {
+    flex: 1;
+    margin-right: 20px;
+}
+  
+.rightPanel {
+    flex: 1;
+}
+  
+.checklist {
+   padding-bottom: 3%;
+}
+  
+.leaderboard {
+   padding-top: 3%;
+}
+
+.statsBox {
+    padding: 20px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: inline-block;
+    min-width: 120px;
+    text-align: center;
+}
+
+.statsLabel {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.statsValue {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+}
+
+.blackCell {
+    background-color: black;
+    color: white;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    display: flex;          
+    justify-content: space-between;  
+    align-items: center;    
+}
+
+.tutorialButton {
+    background-color: #c12f2a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.tutorialButton:hover {
+    background-color: #a02824;
+}

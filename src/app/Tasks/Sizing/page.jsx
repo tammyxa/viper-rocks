@@ -1,13 +1,11 @@
 'use client';
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import LoadingSpinner from "../../(components)/LoadingSpinner/LoadingSpinner";
 import dynamic from 'next/dynamic';
 import { signIn, useSession } from "next-auth/react";
 
-const DisplayQuadrant = dynamic(() => import('../../(components)/Sizing/DisplayQuadrant/canvas'), {
-  ssr: false,
-});
+const DisplayQuadrant = dynamic(() => import('../../(components)/Sizing/DisplayQuadrant/canvas'), { ssr: false });
 
 const SizingPage = () => {
   const { data: session, status } = useSession();
@@ -82,9 +80,9 @@ const SizingPage = () => {
     setIsLoading(false); // Set loading state to false after submission
   };
 
-  const handleNextQuadrant = () => {
-    setCurrentIndex(prevIndex => (prevIndex + 1) % quadrants.length);
-  };
+    const handleNextQuadrant = () => {
+        setCurrentIndex(prevIndex => (prevIndex + 1) % quadrants.length);
+    };
 
   return (
     <>
