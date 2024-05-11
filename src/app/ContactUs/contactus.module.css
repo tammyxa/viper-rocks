@@ -1,0 +1,41 @@
+/* Ensure button selector is within a scope containing a local class or ID selector */
+.contactpagecontainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5%;
+    margin-bottom: 5%;
+  }
+
+  .contactformsection {
+    margin-top: 4%;
+  }
+  
+  .contactpagecontainer input,
+  .contactpagecontainer textarea {
+    width: 100%;
+    padding: 1%;
+    border: 1% solid #ccc;
+    border-radius: 4%;
+  }
+  
+  .contactpagecontainer label {
+    display: block;
+    margin-bottom: 1%;
+  }
+  
+  /* Add a local class or ID selector to make button selector pure */
+  .contactpagecontainer button {
+    width: 100%;
+    padding: 3%;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 2%;
+    cursor: pointer;
+  }
+  
+  .contactpagecontainer button:hover {
+    background-color: #0056b3;
+  }
+  

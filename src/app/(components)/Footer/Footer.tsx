@@ -1,5 +1,3 @@
-import OurTeam from "@/data/ourTeam.json";
-
 export const Footer = () => {
   return (
     <footer className="FooterInternal bg-gray-dark text-white">
@@ -10,18 +8,17 @@ export const Footer = () => {
             <ul className="flex flex-wrap">
               <li className="flex flex-nowrap mr-2">
                 <div>
-                  <span className="break-words">
-                    {OurTeam.map((p, i) => (
-                      <a
-                        key={i}
-                        href={p.link}
-                        className="group cursor-pointer text-jpl-sky-blue can-hover:hover:text-jpl-sky-blue-dark"
-                      >
-                        {p.name},{" "}
-                      </a>
-                    ))}
-                  </span>
+                  <a
+                    href="mailto:#"
+                    target=""
+                    rel=""
+                    className="group cursor-pointer text-jpl-sky-blue can-hover:hover:text-jpl-sky-blue-dark"
+                  >
+                    <span className="break-words">Michael Gibson, Jerome Pineda, Angy Xajil, Tammy Xaypraseuth, Zainab Sulaiman, Diane Tabilas, Diana Arteaga-Andrade, Cristian Gomez, Santiago Bautista,
+                    Kevin Andrade, Nida Sheikh</span>
+                  </a>
                 </div>
+                ,
               </li>
               <li className="flex flex-nowrap mr-2">
                 <div>
@@ -30,7 +27,8 @@ export const Footer = () => {
                     target=""
                     rel=""
                     className="group cursor-pointer text-jpl-sky-blue can-hover:hover:text-jpl-sky-blue-dark"
-                  ></a>
+                  >
+                  </a>
                 </div>
               </li>
             </ul>
@@ -68,11 +66,13 @@ export const Footer = () => {
           </div>
 
           <div className="text-body-sm mb-2">
-            <b>Page Last Updated:</b> May 2nd, 2024
+            <b>Page Last Updated:</b>
+            July 28, 2022
           </div>
 
           <div className="mb-2">
-            <b>Site Version:</b> 1.0
+            <b>Site Version:</b>
+            1.0
           </div>
           <p className="my-8 text-body-xs xl:w-1/2">
             JPL is a federally funded research and development center staffed
