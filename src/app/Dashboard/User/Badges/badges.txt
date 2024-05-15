@@ -1,0 +1,47 @@
+Badge name
+Description
+File name
+
+Citizen Scientist Recruit
+Completed all starting tasks.
+citizen_scientist_recruit.png
+
+First Time Scouting
+Completed scouting tutorial.
+first_time_scouting.png
+
+First Time Sizing
+Completed sizing tutorial.
+first_time_sizing.png
+
+First Time Classification
+Completed classification tutorial.
+first_time_classification.png
+
+Dedicated
+Log in 7 days in a row.
+dedicated.png
+
+Beginner Scouter
+Scout 10 images.
+beginner_scouter.png
+
+Novice Sizer
+Size 10 rocks.
+novice_sizer.png
+
+Rookie Classifier
+Classify 10 rocks.
+rookie_classifier.png
+
+Master Scouter
+Scout 100 images.
+master_scouter.png
+
+Master Sizer
+Size 100 rocks.
+master_sizer.png
+
+Master Classifier
+Size 100 images.
+master_classifier.png
